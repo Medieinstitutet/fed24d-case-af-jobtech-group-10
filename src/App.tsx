@@ -4,6 +4,7 @@ import Search from './pages/Search';
 import About from './pages/About';
 import { DigiButton } from '@digi/arbetsformedlingen-react';
 import { ButtonVariation } from '@digi/arbetsformedlingen';
+import JobDetail from './pages/JobDetail';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/about" element={<About />} />
+          <Route path="/job/:id" element={<JobDetail />} />
         </Routes>
       </div>
     </>
