@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.example.com', // API
+  baseURL: "https://jobsearch.api.jobtechdev.se", 
 });
 
 export default api;
