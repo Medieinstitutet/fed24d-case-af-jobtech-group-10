@@ -1,5 +1,10 @@
-function Home() {
-  return <h1>Välkommen till hemsidan ✅</h1>;
-}
+import Dashboard from "../components/Dashboard";
 
-export default Home;
+export default function Home() {
+  return (
+    <div>
+      <h1>Välkommen!</h1>
+      <Dashboard />
+    </div>
+  );
+}
