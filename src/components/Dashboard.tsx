@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   getTotalJuniorTechJobs,
   getLatestJuniorTechJobs,
@@ -7,53 +7,58 @@ import {
 import type { JobAd } from "../models/IJobs";
 import type { CityStat } from "../services/jobService";
 
-// Recharts
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-
-// --------------------
-// Kortkomponent
-// --------------------
-function DashboardCard({
-  title,
-  children,
-  style,
-}: {
-  title: string;
-  children: React.ReactNode;
-  style?: React.CSSProperties; // <-- tillåt style
-}) {
-  return (
-    <div
-      className="card"
-      style={{
-        padding: "20px",
-        borderRadius: "8px",
-        background: "#fff",
-        boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
-        ...style, // <-- slå ihop med style prop
-      }}
-    >
-      <h4>{title}</h4>
-      {children}
-    </div>
-  );
-}
+import { DigiInfoCard, DigiBarChart } from "@digi/arbetsformedlingen-react";
+import "./Dashboard.scss";
 
 // --------------------
 // Toppstäder diagram
 // --------------------
 function TopCitiesChart({ cities }: { cities: CityStat[] }) {
-  if (cities.length === 0) return <p>Inga data tillgängliga</p>;
+  const chartRef = useRef<DigiBarChart>(null);
+
+  useEffect(() => {
+    const el = chartRef.current;
+    if (!el) return;
+
+    const handler = (e: CustomEvent<any>) =>
+      console.log("Klick på stapel:", e.detail);
+    el.addEventListener("afOnClickBar", handler);
+
+    return () => el.removeEventListener("afOnClickBar", handler);
+  }, []);
+
+  if (!cities || cities.length === 0) return <p>Inga data tillgängliga</p>;
+
+  const chartData = {
+    data: {
+      xValues: cities.map((_, index) => index + 1),
+      xValueNames: cities.map((c) => c.name),
+      series: [
+        {
+          yValues: cities.map((c) => c.count),
+          title: "Antal jobb",
+        },
+      ],
+    },
+    x: "Stad",
+    y: "Antal jobb",
+    title: "",
+    subTitle: "",
+    infoText: "",
+    meta: {
+      valueLabels: true,
+      hideXAxis: false,
+    },
+  };
 
   return (
-    <ResponsiveContainer width="100%" height={250}>
-      <BarChart data={cities}>
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Bar dataKey="count" fill="#8884d8" />
-      </BarChart>
-    </ResponsiveContainer>
+    <DigiBarChart
+      ref={chartRef}
+      afHeading="Antal junior techjobb per stad"
+      afVariation="vertical"
+      afChartData={chartData}
+      style={{ width: "100%", height: "300px" }}
+    />
   );
 }
 
@@ -61,7 +66,7 @@ function TopCitiesChart({ cities }: { cities: CityStat[] }) {
 // Senaste jobblistan
 // --------------------
 function LatestJobsList({ jobs }: { jobs: JobAd[] }) {
-  if (jobs.length === 0) return <p>Inga jobbannonser</p>;
+  if (!jobs || jobs.length === 0) return <p>Inga jobbannonser</p>;
 
   return (
     <ul>
@@ -107,18 +112,23 @@ export default function Dashboard() {
   if (loading) return <p>Laddar dashboard...</p>;
 
   return (
-    <div style={{ display: "flex", gap: "20px", flexWrap: "wrap" }}>
-      <DashboardCard title="Totalt antal techjobb idag">
-        <p style={{ fontSize: "24px", fontWeight: "bold" }}>{total}</p>
-      </DashboardCard>
+    <div className="dashboard">
+      {/* Totalt antal techjobb */}
+      <DigiInfoCard afHeading="Totalt antal techjobb idag" className="dashboard__card">
+        <p className="dashboard__total">{total}</p>
+      </DigiInfoCard>
 
-      <DashboardCard title="Toppstäder – Junior techjob" style={{ flex: 1 }}>
-        <TopCitiesChart cities={cities} />
-      </DashboardCard>
+      {/* Toppstäder */}
+      <DigiInfoCard afHeading="Toppstäder – Junior techjobb" className="dashboard__card">
+        <div style={{ width: "100%", maxWidth: "600px", height: "300px" }}>
+          <TopCitiesChart cities={cities} />
+        </div>
+      </DigiInfoCard>
 
-      <DashboardCard title="Senaste jobbannonser">
+      {/* Senaste jobbannonser */}
+      <DigiInfoCard afHeading="Senaste jobbannonser" className="dashboard__card">
         <LatestJobsList jobs={latest} />
-      </DashboardCard>
+      </DigiInfoCard>
     </div>
   );
 }
