@@ -1,0 +1,129 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.dashboard__card {
+  flex: 1 1 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border-radius: 8px; 
+  background-color: #ffffff; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+.sc-digi-info-card-h .digi-info-card__heading {
+  text-align: center;
+  width: 100%;
+  padding: 10px;
+  font-size: 18px; 
+  font-weight: bold;
+  color: #333;
+}
+
+.sc-digi-info-card-h .digi-info-card__content.sc-digi-info-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px; 
+}
+
+.dashboard__total {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 10px; 
+}
+
+.dashboard__chart-container {
+  width: 100%;
+  max-width: 600px;
+  height: 300px;
+  margin: 0 auto; 
+  border-radius: 8px; 
+  overflow: hidden; 
+  background-color: #f9f9f9; 
+}
+
+.dashboard__card--chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0; 
+}
+
+.dashboard__card--jobs {
+  padding: 20px;
+  background-color: #f9f9f9; 
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; 
+}
+
+li {
+  padding: 12px;
+  border-radius: 8px; 
+  background-color: #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
+  transition: transform 0.3s ease, box-shadow 0.3s ease; 
+}
+
+li:hover {
+  transform: translateY(-4px); 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+}
+
+a {
+  font-size: 16px;
+  color: #007bff; 
+  text-decoration: none; 
+  font-weight: 600; 
+  display: block;
+  text-align: center;
+}
+
+a:hover {
+  text-decoration: underline; 
+}
+
+li span {
+  font-size: 14px;
+  color: #666; 
+}
+
+/* Tablet / Desktop */
+@media (min-width: 768px) {
+  .dashboard {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .dashboard__card {
+    flex: 1 1 300px;
+    max-width: 600px;
+  }
+
+  .dashboard__chart-container {
+    height: 350px;
+  }
+}
