@@ -1,29 +1,21 @@
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Search from './pages/Search';
 import About from './pages/About';
-import { DigiButton } from '@digi/arbetsformedlingen-react';
-import { ButtonVariation } from '@digi/arbetsformedlingen';
 import JobDetail from './pages/JobDetail';
+import Layout from './pages/layout';
 
 function App() {
   return (
     <>
-      <DigiButton afVariation={ButtonVariation.PRIMARY}>Hälsa</DigiButton>
-
-      <div>
-        <nav style={{ padding: '1rem', background: '#eee' }}>
-          <Link to="/">Home</Link> | <Link to="/search">Search</Link> |{' '}
-          <Link to="/about">About</Link>
-        </nav>
-
-        <Routes>
-          <Route path="/" element={<Home />} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/about" element={<About />} />
           <Route path="/job/:id" element={<JobDetail />} />
-        </Routes>
-      </div>
+        </Route>
+      </Routes>
     </>
   );
 }

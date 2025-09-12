@@ -11,3 +11,27 @@ body {
 h1 {
   color: hotpink;
 }
+
+.header-logo {
+  height: 60px;
+  width: auto;
+  position: absolute;
+  left: -0.5px;
+  @media  (min-width: 992px) {
+    height: 65px;
+  }
+}
+
+.digi-footer {
+  background-color: yellow;
+}
+
+.footer-logo {
+  height: 100px;
+  width: auto;
+
+}
+
+.footer-content {
+  color: white;
+}
