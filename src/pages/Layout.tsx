@@ -5,10 +5,13 @@ import {
   DigiHeaderNavigation,
   DigiHeaderNavigationItem,
 } from '@digi/arbetsformedlingen-react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 
 export default function Layout() {
+  const location = useLocation();
+  const path = location.pathname;
+  
   return (
     <>
       <DigiHeader afSystemName="TechStart" afHideSystemName={false} afMenuButtonText="Meny">
@@ -18,13 +21,13 @@ export default function Layout() {
 
         <div slot="header-content">
           <DigiHeaderNavigation af-close-button-text="Stäng">
-            <DigiHeaderNavigationItem afCurrentPage={true}>
+            <DigiHeaderNavigationItem afCurrentPage={path === '/'}>
               <NavLink to="/">Hem</NavLink>
             </DigiHeaderNavigationItem>
-            <DigiHeaderNavigationItem>
+            <DigiHeaderNavigationItem afCurrentPage={path.startsWith('/search')}>
               <NavLink to="/search">Sök jobb</NavLink>
             </DigiHeaderNavigationItem>
-            <DigiHeaderNavigationItem>
+            <DigiHeaderNavigationItem afCurrentPage={path.startsWith('/about')}>
               <NavLink to="/about">Om oss</NavLink>
             </DigiHeaderNavigationItem>
           </DigiHeaderNavigation>
