@@ -3,7 +3,7 @@ import Home from './pages/Home';
 import Search from './pages/Search';
 import About from './pages/About';
 import JobDetail from './pages/JobDetail';
-import Layout from './pages/layout';
+import Layout from './pages/rootlayout';
 
 function App() {
   return (

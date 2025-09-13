@@ -44,6 +44,16 @@ export default function Layout() {
             <img src="/circular_techstart_logo.png" className="footer-logo" alt="TechStart logga" />
           </Link>
         </div>
+        <div slot="content-bottom-right">
+          <p>Följ vår projekt på</p>
+          <a
+            href="https://github.com/Medieinstitutet/fed24d-case-af-jobtech-group-10/tree/dev?tab=readme-ov-file"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub
+          </a>
+        </div>
       </DigiFooter>
     </>
   );
