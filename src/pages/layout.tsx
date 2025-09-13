@@ -13,16 +13,11 @@ export default function Layout() {
     <>
       <DigiHeader afSystemName="TechStart" afHideSystemName={false} afMenuButtonText="Meny">
         <NavLink to="/" slot="header-logo" aria-label="TechStart startsida">
-          <img
-            slot="header-logo"
-            src="/circular_techstart_logo.png"
-            className="header-logo"
-            alt="TechStart logga"
-          />
+          <img src="/circular_techstart_logo.png" className="header-logo" alt="TechStart logga" />
         </NavLink>
 
         <div slot="header-content">
-          <DigiHeaderNavigation>
+          <DigiHeaderNavigation af-close-button-text="Stäng">
             <DigiHeaderNavigationItem afCurrentPage={true}>
               <NavLink to="/">Hem</NavLink>
             </DigiHeaderNavigationItem>

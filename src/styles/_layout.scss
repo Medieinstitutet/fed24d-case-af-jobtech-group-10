@@ -1,0 +1,58 @@
+@import 'variables';
+
+/* Header's background color */
+.digi-layout-block--primary.sc-digi-header {
+  background-color: $primary-cl !important;
+}
+
+.header-logo {
+  height: 60px;
+  width: auto;
+  position: absolute;
+  left: -0.5px;
+  @media (min-width: 992px) {
+    height: 65px;
+  }
+}
+
+/* TechStart color */
+digi-header [class*='system-name'] {
+  color: $light-text-cl;
+}
+
+/* Header's navigation */
+.sc-digi-header-navigation-item-h .sc-digi-header-navigation-item-s>a {
+    color: $light-text-cl;
+    background-color: $primary-cl;
+}
+
+/* Header's navigation active underline */
+.digi-header-navigation-item-indicator.digi-header-navigation-item--active {
+  background-color: $accent-cl;
+}
+
+/* MOBILE - Header's menu text color */
+.sc-digi-button-h .digi-button--variation-function.sc-digi-button,
+.sc-digi-icon-bars-h svg.sc-digi-icon-bars, 
+.sc-digi-icon-x-h svg.sc-digi-icon-x {
+    color: $light-text-cl;
+}
+
+/* MOBILE - Header's menu background color */
+.sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
+    background-color: $primary-cl;
+}
+
+/* Footer's background color */
+.sc-digi-layout-block-h .digi-layout-block--profile.sc-digi-layout-block {
+  background-color: $primary-cl;
+}
+
+.footer-content {
+  color: $light-text-cl;
+}
+
+.footer-logo {
+  height: 100px;
+  width: auto;
+}
