@@ -31,6 +31,7 @@ digi-header [class*='system-name'] {
   background-color: $accent-cl !important;
 }
 
+
 .sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
   border: none;
 }
@@ -38,6 +39,13 @@ digi-header [class*='system-name'] {
 .digi-header-navigation-item-indicator.sc-digi-header-navigation-item {
   background-color: transparent;
   transition: background-color 0.3s ease-in-out;
+}
+
+/* Nav on hover */
+.sc-digi-header-navigation-item-h .sc-digi-header-navigation-item-s > a:hover {
+  color: $dark-text-cl;
+  background-color: $accent-cl;
+  text-decoration: none;
 }
 
 /* MOBILE - Header's menu text color */
