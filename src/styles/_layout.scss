@@ -28,7 +28,15 @@ digi-header [class*='system-name'] {
 
 /* Header's navigation active underline */
 .digi-header-navigation-item-indicator.digi-header-navigation-item--active {
-  background-color: $accent-cl;
+  background-color: $accent-cl !important;
+}
+
+.sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
+  border: none;
+}
+
+.digi-header-navigation-item-indicator.sc-digi-header-navigation-item {
+  background-color: transparent;
 }
 
 /* MOBILE - Header's menu text color */
@@ -41,6 +49,11 @@ digi-header [class*='system-name'] {
 /* MOBILE - Header's menu background color */
 .sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
     background-color: $primary-cl;
+}
+
+.sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner.sc-digi-header-navigation-s>digi-header-navigation-item, .sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner .sc-digi-header-navigation-s>digi-header-navigation-item,
+.sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner.sc-digi-header-navigation-s>digi-header-navigation-item:first-child, .sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner.sc-digi-header-navigation-s>digi-header-navigation-item, .sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner .sc-digi-header-navigation-s>digi-header-navigation-item:first-child {
+  border: none;
 }
 
 /* Footer's background color */
