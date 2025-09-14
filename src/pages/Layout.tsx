@@ -11,7 +11,7 @@ import { Outlet } from 'react-router-dom';
 export default function Layout() {
   const location = useLocation();
   const path = location.pathname;
-  
+
   return (
     <>
       <DigiHeader afSystemName="TechStart" afHideSystemName={false} afMenuButtonText="Meny">
@@ -47,7 +47,7 @@ export default function Layout() {
             <img src="/circular_techstart_logo.png" className="footer-logo" alt="TechStart logga" />
           </Link>
         </div>
-        <div slot="content-bottom-right">
+        <div slot="content-bottom-right" className="footer-content">
           <p>Följ vår projekt på</p>
           <a
             href="https://github.com/Medieinstitutet/fed24d-case-af-jobtech-group-10/tree/dev?tab=readme-ov-file"

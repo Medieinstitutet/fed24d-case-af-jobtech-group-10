@@ -5,6 +5,11 @@
   background-color: $primary-cl !important;
 }
 
+digi-header [class*='system-name'],
+digi-header [class*='navigation-item'] a {
+  @include heading-font;
+}
+
 .header-logo {
   height: 60px;
   width: auto;
@@ -21,16 +26,15 @@ digi-header [class*='system-name'] {
 }
 
 /* Header's navigation */
-.sc-digi-header-navigation-item-h .sc-digi-header-navigation-item-s>a {
-    color: $light-text-cl;
-    background-color: $primary-cl;
+.sc-digi-header-navigation-item-h .sc-digi-header-navigation-item-s > a {
+  color: $light-text-cl;
+  background-color: $primary-cl;
 }
 
 /* Header's navigation active underline */
 .digi-header-navigation-item-indicator.digi-header-navigation-item--active {
   background-color: $accent-cl !important;
 }
-
 
 .sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
   border: none;
@@ -50,18 +54,38 @@ digi-header [class*='system-name'] {
 
 /* MOBILE - Header's menu text color */
 .sc-digi-button-h .digi-button--variation-function.sc-digi-button,
-.sc-digi-icon-bars-h svg.sc-digi-icon-bars, 
+.sc-digi-icon-bars-h svg.sc-digi-icon-bars,
 .sc-digi-icon-x-h svg.sc-digi-icon-x {
-    color: $light-text-cl;
+  color: $light-text-cl;
 }
 
 /* MOBILE - Header's menu background color */
 .sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
-    background-color: $primary-cl;
+  background-color: $primary-cl;
 }
 
-.sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner.sc-digi-header-navigation-s>digi-header-navigation-item, .sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner .sc-digi-header-navigation-s>digi-header-navigation-item,
-.sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner.sc-digi-header-navigation-s>digi-header-navigation-item:first-child, .sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner.sc-digi-header-navigation-s>digi-header-navigation-item, .sc-digi-header-navigation-h .digi-header-navigation--mobile .digi-header-navigation__inner .sc-digi-header-navigation-s>digi-header-navigation-item:first-child {
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner.sc-digi-header-navigation-s
+  > digi-header-navigation-item,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner
+  .sc-digi-header-navigation-s
+  > digi-header-navigation-item,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner.sc-digi-header-navigation-s
+  > digi-header-navigation-item:first-child,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner.sc-digi-header-navigation-s
+  > digi-header-navigation-item,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner
+  .sc-digi-header-navigation-s
+  > digi-header-navigation-item:first-child {
   border: none;
 }
 
@@ -72,6 +96,7 @@ digi-header [class*='system-name'] {
 
 .footer-content {
   color: $light-text-cl;
+  @include heading-font;
 }
 
 .footer-logo {
