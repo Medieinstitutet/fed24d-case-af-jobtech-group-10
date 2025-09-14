@@ -10,13 +10,29 @@ export interface JobAd {
   published?: string;
   application_deadline?: string;
   description?: string;
-  employment_type?: string;
   salary_description?: string;
-  occupation?: string;
-  occupation_group?: string;
+  occupation?: {                      //objekt för filtrering
+    concept_id: string;
+    label: string;
+    legacy_ams_taxonomy_id?: string;
+  };
+  occupation_group?: {                 //objekt för filtrering      
+    concept_id: string;
+    label: string;
+    legacy_ams_taxonomy_id?: string;
+  };
   occupation_field?: string;
   application_url?: string;
-  working_hours_type?: string;
+  working_hours_type?: {               //objekt för filtrering
+    concept_id: string;
+    label: string;
+    legacy_ams_taxonomy_id: string;
+  };
+  employment_type?: {                   //objekt för filtrering
+    concept_id: string;
+    label: string;
+    legacy_ams_taxonomy_id: string;
+  };
 }
 
 export interface JobHit {

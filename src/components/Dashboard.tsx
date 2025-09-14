@@ -7,43 +7,51 @@ import {
 import type { JobAd } from "../models/IJobs";
 import type { CityStat } from "../services/jobService";
 
-import { DigiInfoCard, DigiBarChart } from "@digi/arbetsformedlingen-react";
+import { DigiInfoCard, DigiBarChart, DigiLoaderSpinner } from "@digi/arbetsformedlingen-react";
 import "./Dashboard.scss";
 
 // --------------------
-// Toppstäder diagram
+// Toppstäder diagram (Junior techjobb statistik)
 // --------------------
-function TopCitiesChart({ cities }: { cities: CityStat[] }) {
-  const chartRef = useRef<DigiBarChart>(null);
+export function TopCitiesChart({ cities }: { cities: CityStat[] }) {
+  const chartRef = useRef<HTMLDigiBarChartElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [sizeKey, setSizeKey] = useState(0);
 
   useEffect(() => {
     const el = chartRef.current;
     if (!el) return;
 
-    const handler = (e: CustomEvent<any>) =>
+    type BarClickDetail = { name: string; value: number };
+    const handler = (e: CustomEvent<BarClickDetail>) => {
       console.log("Klick på stapel:", e.detail);
-    el.addEventListener("afOnClickBar", handler);
+    };
 
-    return () => el.removeEventListener("afOnClickBar", handler);
+    el.addEventListener("afOnClickBar", handler as EventListener);
+    return () => el.removeEventListener("afOnClickBar", handler as EventListener);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const ro = new ResizeObserver(() => setSizeKey((k) => k + 1));
+    ro.observe(containerRef.current);
+    return () => ro.disconnect();
   }, []);
 
   if (!cities || cities.length === 0) return <p>Inga data tillgängliga</p>;
 
   const chartData = {
     data: {
-      xValues: cities.map((_, index) => index + 1),
+      xValues: cities.map((_, i) => i + 1),
       xValueNames: cities.map((c) => c.name),
       series: [
-        {
-          yValues: cities.map((c) => c.count),
-          title: "Antal jobb",
-        },
+        { yValues: cities.map((c) => c.count), title: "Antal juniorjobb" },
       ],
     },
     x: "Stad",
-    y: "Antal jobb",
-    title: "",
-    subTitle: "",
+    y: "Antal juniorjobb",
+    title: "Juniorjobb per stad",
+    subTitle: "Topp 4 städer",
     infoText: "",
     meta: {
       valueLabels: true,
@@ -52,18 +60,21 @@ function TopCitiesChart({ cities }: { cities: CityStat[] }) {
   };
 
   return (
-    <DigiBarChart
-      ref={chartRef}
-      afHeading="Antal junior techjobb per stad"
-      afVariation="vertical"
-      afChartData={chartData}
-      style={{ width: "100%", height: "300px" }}
-    />
+    <div ref={containerRef} className="chart-container">
+      <DigiBarChart
+        key={sizeKey}
+        ref={chartRef}
+        afHeadingLevel="h2"
+        af-variation="vertical"
+        afChartData={chartData}
+        style={{ width: "100%", height: "100%" }}
+      />
+    </div>
   );
 }
 
 // --------------------
-// Senaste jobblistan
+// Senaste juniorjobb-listan
 // --------------------
 function LatestJobsList({ jobs }: { jobs: JobAd[] }) {
   if (!jobs || jobs.length === 0) return <p>Inga jobbannonser</p>;
@@ -72,8 +83,8 @@ function LatestJobsList({ jobs }: { jobs: JobAd[] }) {
     <ul>
       {jobs.map((job) => (
         <li key={job.id}>
-          <a href={job.workplace} target="_blank" rel="noreferrer">
-            {job.headline} {job.city ? `(${job.city})` : ""}
+          <a href={job.application_url} target="_blank" rel="noreferrer">
+            {job.headline} ({job.city})
           </a>
         </li>
       ))}
@@ -82,7 +93,7 @@ function LatestJobsList({ jobs }: { jobs: JobAd[] }) {
 }
 
 // --------------------
-// Huvudinstrumentpanel
+// Huvudinstrumentpanel (Dashboard)
 // --------------------
 export default function Dashboard() {
   const [total, setTotal] = useState<number | null>(null);
@@ -94,14 +105,15 @@ export default function Dashboard() {
     async function loadData() {
       setLoading(true);
       try {
+        // Hämta data via de angivna API-anropen
         const [totalJobs, topCities, latestJobs] = await Promise.all([
-          getTotalJuniorTechJobs(),
-          getTopCitiesForJuniorTech(4),
-          getLatestJuniorTechJobs(5),
+          getTotalJuniorTechJobs(), // Hämta totala juniorjobb
+          getTopCitiesForJuniorTech(4), // Hämta topp 4 städer för juniorjobb
+          getLatestJuniorTechJobs(4), // Hämta senaste 4 juniorjobb
         ]);
-        setTotal(totalJobs);
-        setCities(topCities);
-        setLatest(latestJobs);
+        setTotal(totalJobs); // Totalt antal juniorjobb
+        setCities(topCities); // Toppstäder för juniorjobb
+        setLatest(latestJobs); // Lista över de senaste juniorjobben
       } finally {
         setLoading(false);
       }
@@ -109,24 +121,25 @@ export default function Dashboard() {
     loadData();
   }, []);
 
-  if (loading) return <p>Laddar dashboard...</p>;
+  if (loading)
+    return <DigiLoaderSpinner af-size="medium" af-text="Håll ut, dashboard laddar" />;
 
   return (
     <div className="dashboard">
-      {/* Totalt antal techjobb */}
-      <DigiInfoCard afHeading="Totalt antal techjobb idag" className="dashboard__card">
+      {/* Totalt antal junior techjobb */}
+      <DigiInfoCard af-heading="Totalt antal junior techjobb idag" af-heading-level="h2" className="dashboard__card">
         <p className="dashboard__total">{total}</p>
       </DigiInfoCard>
 
-      {/* Toppstäder */}
-      <DigiInfoCard afHeading="Toppstäder – Junior techjobb" className="dashboard__card">
-        <div style={{ width: "100%", maxWidth: "600px", height: "300px" }}>
+      {/* Toppstäder för junior techjobb */}
+      <DigiInfoCard af-heading="Toppstäder – Junior techjobb" af-heading-level="h2" className="dashboard__card">
+        <div>
           <TopCitiesChart cities={cities} />
         </div>
       </DigiInfoCard>
 
-      {/* Senaste jobbannonser */}
-      <DigiInfoCard afHeading="Senaste jobbannonser" className="dashboard__card">
+      {/* Nya juniorjobb annonser */}
+      <DigiInfoCard af-heading="Nya juniorjobbannonser" af-heading-level="h2" className="dashboard__card">
         <LatestJobsList jobs={latest} />
       </DigiInfoCard>
     </div>
