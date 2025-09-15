@@ -5,15 +5,19 @@ import type { JobAd } from "../models/IJobs";
 
 export default function JobDetail() {
   const { id } = useParams<{ id: string }>();
+  console.log("Job ID från URL:", id);  // Logga ID från URL
+
   const [job, setJob] = useState<JobAd | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchJob() {
       if (!id) return;
+      console.log("Hämtar jobbdata för id:", id);  // Logga när vi börjar hämta jobb
       setLoading(true);
       try {
         const jobData = await getJobDetails(id);
+        console.log("Jobbdata hämtad:", jobData);  // Logga jobbdata
         setJob(jobData);
       } finally {
         setLoading(false);
@@ -25,6 +29,8 @@ export default function JobDetail() {
   if (loading) return <p>Laddar...</p>;
   if (!job) return <p>Kunde inte hitta jobbet.</p>;
 
+  console.log("Jobb som ska renderas:", job);  // Logga jobbdata innan rendering
+
   return (
     <div style={{ maxWidth: "800px", margin: "0 auto", padding: "20px" }}>
       <Link to="/" style={{ textDecoration: "none", color: "#1976d2" }}>
@@ -34,7 +40,8 @@ export default function JobDetail() {
       <h1 style={{ margin: "20px 0" }}>{job.headline}</h1>
       <p><strong>Arbetsplats:</strong> {job.workplace}</p>
       <p><strong>Stad:</strong> {job.city || "Okänd stad"}</p>
-      <p><strong>Anställningsform:</strong> {job.working_hours_type || "Ej angivet"}</p>
+      <p><strong>Anställningsform:</strong> {job.working_hours_type?.label || "Ej angivet"}</p>
+      <p><strong>Yrke:</strong> {job.occupation?.label || "Ej angivet"}</p>
 
       <hr style={{ margin: "20px 0" }} />
 

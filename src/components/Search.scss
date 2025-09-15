@@ -1,0 +1,275 @@
+@use '../styles/variables' as *;
+
+// Sökfunktion och filtrering
+.findjob {
+  @include heading-font;
+  background-color: $accent-light-cl;
+  padding: 50px;
+  padding-bottom: 0;
+  margin: 0;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 2rem;
+}
+
+.search {
+  @include heading-font;
+  background-color: $accent-light-cl;
+  padding: 20px;
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px;
+  margin-top: 0;
+
+  input,
+  select,
+  button {
+    @include body-font;
+    padding: 8px;
+    font-size: 1rem;
+    background-color: $accent-light-cl;
+    border-radius: 8px;
+  }
+
+  input,
+  option {
+    @include body-font;
+    flex: 1;
+    min-width: 200px;
+  }
+}
+
+.results-count {
+  margin-left: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: #334155;
+}
+
+.job-results {
+  display: grid;
+  row-gap: 50px;
+  column-gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  background-color: $accent-light-cl;
+  margin: 20px;
+}
+
+.job-card-link {
+  text-decoration: none !important;
+  color: inherit;
+  display: block;
+}
+
+.job-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $accent-cl;
+  border-radius: 8px;
+  padding: 16px;
+  height: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  h3 {
+    @include heading-font;
+    margin: 0;
+    font-size: 1.25rem;
+    color: #334155;
+  }
+
+  p {
+    @include body-font;
+    margin: 0;
+    font-size: 1rem;
+    color: #334155;
+  }
+
+  .working-hours {
+    @include body-font;
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 1rem;
+    font-weight: bold !important;
+    color: #fff;
+    border-radius: 4px;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    width: 50px;
+    text-align: center;
+
+    &.heltid {
+      background-color: $accent-light-cl;
+      color: #334155;
+    }
+    &.deltid {
+      background-color: #334155;
+      color: $accent-light-cl;
+    }
+  }
+
+  .read-more {
+    display: flex;
+    justify-content: end;
+  }
+
+  .job-link {
+    margin-top: 12px;
+    padding: 6px 12px;
+    background-color: #1976d2;
+    color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #115293;
+    }
+  }
+}
+
+.sc-digi-button-h .digi-button--size-medium.sc-digi-button {
+  font-family: 'Sintony', sans-serif !important;
+  font-weight: 700 !important;
+  background-color: $primary-cl;
+  border-color: $primary-cl;
+  color: $light-text-cl; 
+
+  &:hover {
+    background-color: $accent-light-cl;
+    color: $primary-cl;
+    border-color: $accent-light-cl;
+    border: 1px solid $primary-cl;
+  }
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px; 
+  flex-wrap: wrap;
+  padding-top: 40px;
+  padding-bottom: 30px;
+
+  button {
+    @include heading-font;
+    padding: 3px 6px; 
+    font-size: 0.9rem; 
+    border: 1px solid $secondary-cl;
+    border-radius: 4px;
+    cursor: pointer;
+    background: transparent; 
+    color: $dark-text-cl; 
+    transition: all 0.3s ease;     
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+
+    &:hover {
+      background-color: $accent-cl; 
+      padding: 4px 12px; 
+    }
+
+    /* Smidig transition på hover och aktiv knapp */
+    &:hover,
+    &.active {
+      transform: scale(1.05); 
+    }
+  }
+
+  /* "Föregående" och "Nästa" */
+  .af-Variation-primary {
+    background-color: red;
+    color: $accent-light-cl;
+    border-radius: 4px;
+
+    &.disabled {
+      background-color: transparent;
+      color: #ddd;
+      cursor: not-allowed; /* bytte från 'none' till 'not-allowed' */
+    }
+
+    &.active {
+      background-color: darken($accent-cl, 20%);
+      color: $accent-light-cl;
+    }
+  }
+
+  .af-Variation-secondary {
+    background-color: transparent;
+    color: $accent-light-cl;
+    border-radius: 4px;
+
+    &.disabled {
+      background-color: transparent;
+      color: #ddd;
+      cursor: not-allowed; /* bytte från 'none' till 'not-allowed' */
+    }
+
+    &.active {
+      background-color: darken($accent-cl, 20%);
+      color: $accent-light-cl;
+    }
+  }
+
+   /* Numrerade sidor - Dessa ska skilja sig från Föregående och Nästa */
+  .pagination-button {
+    padding: 6px 12px;
+    font-size: 1rem;
+    background-color: transparent;
+    color: $primary-cl;
+    border: 1px solid $primary-cl;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+
+    &.active {
+      background-color: $primary-cl;
+      color: $accent-light-cl;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &:hover {
+      background-color: $primary-cl;
+      color: $accent-light-cl;
+      transform: scale(1.05);
+    }
+
+    &.disabled {
+      background-color: transparent;
+      color: #ddd;
+      border: 1px solid #ddd;
+      cursor: not-allowed;
+    }
+  }
+
+  /* Hover och active tillstånd för pagination-knappar */
+  .sc-digi-button-h .digi-button--size-small.sc-digi-button:hover {
+    background-color: $accent-cl;
+    padding: 6px 16px;
+    transform: scale(1.05);
+  }
+}
+
+// Knapparnas "disabled" tillstånd
+.pagination .disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

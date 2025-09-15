@@ -2,16 +2,19 @@ import { useEffect, useState, useCallback } from "react";
 import { searchJuniorTechJobs, getTopCitiesForJuniorTech } from "../services/jobService";
 import type { JobAd } from "../models/IJobs";
 import type { CityStat } from "../services/jobService";
+import type { TaxonomyConcept } from "../services/taxonomyService";
 import { Link } from "react-router-dom";
+import "./Search.scss";
+import { DigiButton, DigiLoaderSpinner } from "@digi/arbetsformedlingen-react";
 
-// occupation_groups – lägg till fler vid behov
-const occupationGroups = [
-  { id: "DJh5_yyF_hEM", label: "Mjukvaru- och systemutvecklare m.fl." },
-  { id: "Q5DF_juj_8do", label: "Utvecklare inom spel och digitala media" },
-];
+type PaginationProps = {
+  page: number;
+  totalPages: number;
+  onPageChange: (newPage: number) => void;
+};
 
 // --------------------
-// Sökformulärkomponent
+// Sökformulär
 // --------------------
 function SearchForm({
   query,
@@ -20,7 +23,14 @@ function SearchForm({
   setFilterCity,
   selectedOccupationGroup,
   setSelectedOccupationGroup,
+  selectedOccupation,
+  setSelectedOccupation,
+  workingHours,
+  setWorkingHours,
   cities,
+  workingHoursOptions,
+  occupationGroupOptions,
+  occupationOptions,
   onSearch,
 }: {
   query: string;
@@ -29,156 +39,160 @@ function SearchForm({
   setFilterCity: (c: string) => void;
   selectedOccupationGroup: string;
   setSelectedOccupationGroup: (id: string) => void;
+  selectedOccupation: string;
+  setSelectedOccupation: (id: string) => void;
+  workingHours: string;
+  setWorkingHours: (w: string) => void;
   cities: CityStat[];
+  workingHoursOptions: TaxonomyConcept[];
+  occupationGroupOptions: TaxonomyConcept[];
+  occupationOptions: TaxonomyConcept[];
   onSearch: () => void;
 }) {
   return (
-    <div style={{ marginBottom: "20px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
+    <div className="search-form">
       <input
         type="text"
         placeholder="Sök bland junior techjobb..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        style={{ flex: 1, padding: "8px" }}
       />
 
-      <select value={filterCity} onChange={(e) => setFilterCity(e.target.value)} style={{ padding: "8px" }}>
+      <select value={filterCity} onChange={(e) => setFilterCity(e.target.value)}>
         <option value="">Alla städer</option>
         {cities.map((c) => (
-          <option key={c.name} value={c.name}>
-            {c.name}
-          </option>
+          <option key={c.id} value={c.id}>{c.name}</option>
         ))}
       </select>
 
-      <select
-        value={selectedOccupationGroup}
-        onChange={(e) => setSelectedOccupationGroup(e.target.value)}
-        style={{ padding: "8px" }}
-      >
+      <select value={workingHours} onChange={(e) => setWorkingHours(e.target.value)}>
+        <option value="">Alla anställningstyper</option>
+        {workingHoursOptions.map((opt) => (
+          <option key={opt.id} value={opt.id}>{opt.label}</option>
+        ))}
+      </select>
+
+      <select value={selectedOccupationGroup} onChange={(e) => setSelectedOccupationGroup(e.target.value)}>
         <option value="">Alla yrkesgrupper</option>
-        {occupationGroups.map((og) => (
-          <option key={og.id} value={og.id}>
-            {og.label}
-          </option>
+        {occupationGroupOptions.map((opt) => (
+          <option key={opt.id} value={opt.id}>{opt.label}</option>
         ))}
       </select>
 
-      <button onClick={onSearch} style={{ padding: "8px 16px" }}>
+      <select value={selectedOccupation} onChange={(e) => setSelectedOccupation(e.target.value)}>
+        <option value="">Alla yrkesroller</option>
+        {occupationOptions.map((opt) => (
+          <option key={opt.id} value={opt.id}>{opt.label}</option>
+        ))}
+      </select>
+
+      <DigiButton
+        afSize="medium"
+        afVariation="primary"
+        afFullWidth={false}
+        onAfOnClick={onSearch}
+      >
         Sök
-      </button>
+      </DigiButton>
     </div>
   );
 }
 
+// --------------------
+// Job results
+// --------------------
 function JobResultsList({ jobs }: { jobs: JobAd[] }) {
-  if (jobs.length === 0) return <p>Inga jobbannonser hittades</p>;
+  if (!jobs.length) return <p>Inga jobbannonser hittades</p>;
 
   return (
-    <div style={{ display: "grid", gap: "16px", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))" }}>
+    <div className="job-results">
       {jobs.map((job) => (
-        <div
-          key={job.id}
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            padding: "16px",
-            background: "#fff",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          {/* Titel som länk */}
-          <Link to={`/job/${job.id}`} style={{ textDecoration: "none", color: "#333" }}>
-            <h3 style={{ margin: "0 0 8px 0", fontSize: "16px" }}>{job.headline}</h3>
-          </Link>
-
-          <p style={{ margin: "0 0 4px 0", fontSize: "14px", color: "#555" }}>
-            {job.workplace}
-          </p>
-          <p style={{ margin: "0 0 8px 0", fontSize: "14px", color: "#555" }}>
-            {job.city || "Okänd stad"}
-          </p>
-
-          {job.working_hours_type && (
-            <span
-              style={{
-                display: "inline-block",
-                padding: "2px 8px",
-                fontSize: "12px",
-                fontWeight: "bold",
-                color: "#fff",
-                backgroundColor: job.working_hours_type === "Heltid" ? "#4caf50" : "#2196f3",
-                borderRadius: "4px",
-                alignSelf: "flex-start",
-              }}
-            >
-              {job.working_hours_type}
-            </span>
-          )}
-
-          {/* Ny tydlig knapp-länk */}
-          <Link
-            to={`/job/${job.id}`}
-            style={{
-              marginTop: "12px",
-              padding: "6px 12px",
-              backgroundColor: "#1976d2",
-              color: "#fff",
-              borderRadius: "4px",
-              textAlign: "center",
-              textDecoration: "none",
-              fontSize: "14px",
-              fontWeight: "bold",
-              alignSelf: "flex-start",
-            }}
-          >
-            Läs mer om jobbet
-          </Link>
-        </div>
+        <Link to={`/job/${job.id}`} key={job.id} className="job-card-link">
+          <div className="job-card">
+            <h3>{job.headline}</h3>
+            <p>{job.workplace}</p>
+            <p>{job.city || "Okänd stad"}</p>
+            {job.working_hours_type && (
+              <span className={`working-hours ${job.working_hours_type.label.toLowerCase()}`}>
+                {job.working_hours_type.label}
+              </span>
+            )}
+            <DigiButton className="read-more" afSize="medium" afVariation="primary" afFullWidth={false}>
+              Läs mer
+            </DigiButton>
+          </div>
+        </Link>
       ))}
     </div>
   );
 }
 
 // --------------------
-// Pagineringskomponent
+// Pagination
 // --------------------
-function Pagination({
-  page,
-  totalPages,
-  onPageChange,
-}: {
-  page: number;
-  totalPages: number;
-  onPageChange: (newPage: number) => void;
-}) {
+function getPageNumbers(page: number, totalPages: number, maxVisible: number = 5): number[] {
+  const half = Math.floor(maxVisible / 2);
+  let start = Math.max(1, page - half);
+  let end = Math.min(totalPages, page + half);
+
+  if (end - start + 1 < maxVisible) {
+    if (start === 1) end = Math.min(totalPages, start + maxVisible - 1);
+    if (end === totalPages) start = Math.max(1, end - maxVisible + 1);
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+}
+
+function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   if (totalPages <= 1) return null;
+
+  const prevDisabled = page === 1;
+  const nextDisabled = page === totalPages;
+  const visiblePages = getPageNumbers(page, totalPages, 5);
+
   return (
-    <div style={{ marginTop: "20px", display: "flex", gap: "5px", flexWrap: "wrap" }}>
-      <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>
+    <div className="pagination">
+      <DigiButton
+        af-Size="small"
+        af-Variation="primary"
+        af-Full-Width={false}
+        onAfOnClick={() => !prevDisabled && onPageChange(page - 1)}
+        aria-disabled={prevDisabled}
+        className={`af-Variation-primary ${prevDisabled ? "disabled" : ""}`}
+      >
         Föregående
-      </button>
-      {Array.from({ length: totalPages }, (_, i) => (
-        <button
-          key={i + 1}
-          onClick={() => onPageChange(i + 1)}
-          style={{ fontWeight: page === i + 1 ? "bold" : "normal" }}
+      </DigiButton>
+
+      {visiblePages.map((p) => (
+        <DigiButton
+          key={p}
+          af-Variation="secondary"
+          af-Size="small"
+          af-Full-Width={false}
+          onAfOnClick={() => onPageChange(p)}
+          aria-current={page === p ? "true" : undefined}
+          className={`af-Variation-${page === p ? "primary" : "secondary"} ${page === p ? "active" : ""}`}
         >
-          {i + 1}
-        </button>
+          {p}
+        </DigiButton>
       ))}
-      <button onClick={() => onPageChange(page + 1)} disabled={page === totalPages}>
+
+      <DigiButton
+        af-Size="small"
+        af-Variation="secondary"
+        af-Full-Width={false}
+        onAfOnClick={() => !nextDisabled && onPageChange(page + 1)}
+        aria-disabled={nextDisabled}
+        className={`af-Variation-secondary ${nextDisabled ? "disabled" : ""}`}
+      >
         Nästa
-      </button>
+      </DigiButton>
     </div>
   );
 }
 
 // --------------------
-// Huvudsökningskomponent
+// Huvudsida
 // --------------------
 export default function Search() {
   const [results, setResults] = useState<JobAd[]>([]);
@@ -187,39 +201,65 @@ export default function Search() {
   const [totalJobs, setTotalJobs] = useState(0);
   const [filterCity, setFilterCity] = useState("");
   const [selectedOccupationGroup, setSelectedOccupationGroup] = useState("");
+  const [selectedOccupation, setSelectedOccupation] = useState("");
+  const [workingHours, setWorkingHours] = useState("");
   const [cities, setCities] = useState<CityStat[]>([]);
   const [loading, setLoading] = useState(false);
+  const [workingHoursOptions, setWorkingHoursOptions] = useState<TaxonomyConcept[]>([]);
+  const [occupationGroupOptions, setOccupationGroupOptions] = useState<TaxonomyConcept[]>([]);
+  const [occupationOptions, setOccupationOptions] = useState<TaxonomyConcept[]>([]);
 
   const limit = 25;
   const totalPages = Math.ceil(totalJobs / limit);
 
   // --------------------
-  // Hantera sökning med useCallback
+  // Hjälp: unika dropdown-options
+  // --------------------
+  const getUniqueOptions = (jobs: JobAd[], key: keyof JobAd): TaxonomyConcept[] => {
+    const map: Record<string, TaxonomyConcept> = {};
+    jobs.forEach((job) => {
+      const val = job[key] as unknown as { concept_id: string; label: string } | undefined;
+      if (val && val.concept_id && !map[val.concept_id]) {
+        map[val.concept_id] = { id: val.concept_id, label: val.label };
+      }
+    });
+    return Object.values(map);
+  };
+
+  // --------------------
+  // Sökfunktion
   // --------------------
   const handleSearch = useCallback(
     async (newPage: number = 1) => {
       setPage(newPage);
       setLoading(true);
+
       try {
         const { jobs, total } = await searchJuniorTechJobs(
           query,
           newPage,
           limit,
-          filterCity,
-          selectedOccupationGroup
+          filterCity || "",
+          selectedOccupationGroup || "",
+          workingHours || "",
+          selectedOccupation || ""
         );
+
         setResults(jobs);
         setTotalJobs(total);
+
+        // Dynamiskt bygg dropdowns
+        setWorkingHoursOptions(getUniqueOptions(jobs, "working_hours_type"));
+        setOccupationGroupOptions(getUniqueOptions(jobs, "occupation_group"));
+        setOccupationOptions(getUniqueOptions(jobs, "occupation"));
       } finally {
         setLoading(false);
       }
     },
-    [query, filterCity, selectedOccupationGroup]
+    [query, filterCity, selectedOccupationGroup, workingHours, selectedOccupation]
   );
 
-  // --------------------
-  // Initiera toppstäder + initial sökning
-  // --------------------
+  // Init: städer + första sökning
   useEffect(() => {
     async function init() {
       setLoading(true);
@@ -235,7 +275,9 @@ export default function Search() {
   }, [handleSearch]);
 
   return (
-    <div>
+    <>
+    <h3 className="findjob">Hitta ditt nästa jobb</h3>
+    <div className="search">
       <SearchForm
         query={query}
         setQuery={setQuery}
@@ -243,12 +285,28 @@ export default function Search() {
         setFilterCity={setFilterCity}
         selectedOccupationGroup={selectedOccupationGroup}
         setSelectedOccupationGroup={setSelectedOccupationGroup}
+        selectedOccupation={selectedOccupation}
+        setSelectedOccupation={setSelectedOccupation}
+        workingHours={workingHours}
+        setWorkingHours={setWorkingHours}
         cities={cities}
+        workingHoursOptions={workingHoursOptions}
+        occupationGroupOptions={occupationGroupOptions}
+        occupationOptions={occupationOptions}
         onSearch={() => handleSearch(1)}
       />
 
-      {loading ? <p>Laddar...</p> : <JobResultsList jobs={results} />}
+      {loading ? (
+        <DigiLoaderSpinner af-size="medium" afText="Lediga techjobben laddar" />
+      ) : (
+        <>
+        <p className="results-count"> {totalJobs} {totalJobs === 1 ? "träff" : "träffar"} </p>
+        <JobResultsList jobs={results} />
+        </>
+      )}
+
       <Pagination page={page} totalPages={totalPages} onPageChange={handleSearch} />
     </div>
+  </>
   );
 }

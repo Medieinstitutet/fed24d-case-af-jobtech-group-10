@@ -1,6 +1,52 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/6VsM7MHT)
 
-# Skapa en egen Platsbanken för ert drömscenario
+# Projektbeskrivning
+
+Detta projekt har utvecklats som en del av en kursuppgift i React. Uppgiften gick ut på att använda Arbetsförmedlingens designsystem tillsammans med deras öppna API. Bakgrunden är att Arbetsförmedlingen idag arbetar med att förbättra användarvänligheten i Platsbanken – och här kommer vårt projekt in i bilden.
+
+Syftet är att skapa en webbapplikation där användare kan söka, filtrera och visualisera platsannonser baserade på Arbetsförmedlingens öppna data. Vi har valt att nischa Platsbanken mot juniora techjobb, för att underlätta för studerande och nyutexaminerade inom IT/tech att ta steget ut i arbetslivet.
+
+👉 Testa applikationen här: https://fed24d-case-af-jobtech-group-10.vercel.app/
+
+## Funktionalitet
+- Sök bland juniora techjobb via Arbetsförmedlingens öppna API.  
+- Filtrera annonser utifrån olika kriterier.  
+- Visualisering av data i form av Dashboards.  
+- Responsiv design med Arbetsförmedlingens designsystem som grund. 
+
+## Deltagare
+| [![Angelica Nylander](https://github.com/angien90.png?size=80)](https://github.com/angien90) | [![Vy Petersson](https://github.com/tgvie.png?size=80)](https://github.com/tgvie) | [![David Brunni](https://github.com/DavidBrunni.png?size=80)](https://github.com/DavidBrunni) |
+|:---:|:---:|:---:|
+| [Angelica Nylander](https://github.com/angien90) | [Vy Petersson](https://github.com/tgvie) | [David Brunni](https://github.com/DavidBrunni) |
+
+## Teknologier
+- HTML, SCSS, Javascript/Typescript
+- React
+- Axios för API-anrop
+- Context API för state-hantering
+
+## Demo
+![Startsida](./public/screenshot-home.png)
+![Sökresultat](./public/screenshot-search.png)
+
+## Installation
+
+1. Klona repot:
+git clone https://github.com/Medieinstitutet/fed24d-case-af-jobtech-group-10.git
+
+2. Installera beroenden:
+npm install
+
+3. Starta utvecklingsservern:
+npm run dev
+
+
+---
+---
+
+
+# Uppgiftsbeskrivning
+### Skapa en egen Platsbanken för ert drömscenario
 
 Dokumentation om Arbetsförmedlingens öppna data finns på https://jobtechdev.se. All öppna data från arbetsförmedlingen och andra offentliga organisationen går även att hitta direkt på dataportal.se.
 I detta dokument ges två förslag på användningsfall som vi tror är lämpliga för studenter som vill utveckla en applikation på riktig data. All data som är öppna data får vem som helst använda utan att fråga myndigheten om lov, så ingen är begränsad till de exempel vi ger.
