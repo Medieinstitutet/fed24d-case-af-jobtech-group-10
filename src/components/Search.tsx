@@ -4,7 +4,7 @@ import type { JobAd } from "../models/IJobs";
 import type { CityStat } from "../services/jobService";
 import type { TaxonomyConcept } from "../services/taxonomyService";
 import { Link } from "react-router-dom";
-import "./Search.scss";
+import "../styles/Search.scss";
 import { DigiButton, DigiLoaderSpinner } from "@digi/arbetsformedlingen-react";
 
 type PaginationProps = {
@@ -153,10 +153,10 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   return (
     <div className="pagination">
       <DigiButton
-        af-Size="small"
-        af-Variation="primary"
-        af-Full-Width={false}
-        onAfOnClick={() => !prevDisabled && onPageChange(page - 1)}
+        afSize="small"
+        afVariation="primary"
+        afFullWidth={false}
+        onAfOnClick={() => { if (prevDisabled) return; onPageChange(page - 1);}}
         aria-disabled={prevDisabled}
         className={`af-Variation-primary ${prevDisabled ? "disabled" : ""}`}
       >
@@ -166,9 +166,9 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
       {visiblePages.map((p) => (
         <DigiButton
           key={p}
-          af-Variation="secondary"
-          af-Size="small"
-          af-Full-Width={false}
+          afVariation="secondary"
+          afSize="small"
+          afFullWidth={false}
           onAfOnClick={() => onPageChange(p)}
           aria-current={page === p ? "true" : undefined}
           className={`af-Variation-${page === p ? "primary" : "secondary"} ${page === p ? "active" : ""}`}
@@ -178,10 +178,10 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
       ))}
 
       <DigiButton
-        af-Size="small"
-        af-Variation="secondary"
-        af-Full-Width={false}
-        onAfOnClick={() => !nextDisabled && onPageChange(page + 1)}
+        afSize="small"
+        afVariation="secondary"
+        afFullWidth={false}
+        onAfOnClick={() => { if (nextDisabled) return; onPageChange(page + 1);}}
         aria-disabled={nextDisabled}
         className={`af-Variation-secondary ${nextDisabled ? "disabled" : ""}`}
       >
