@@ -50,8 +50,8 @@ export function TopCitiesChart({ cities }: { cities: CityStat[] }) {
     },
     x: "Stad",
     y: "Antal juniorjobb",
-    title: "Juniorjobb per stad",
-    subTitle: "Topp 4 städer",
+    title: "",
+    subTitle: "Statistik på 100 jobb",
     infoText: "",
     meta: {
       valueLabels: true,

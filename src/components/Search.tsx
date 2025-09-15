@@ -153,11 +153,12 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   return (
     <div className="pagination">
       <DigiButton
-        afSize="small"
-        afVariation={prevDisabled ? "secondary" : "primary"}
-        afFullWidth={false}
+        af-Size="small"
+        af-Variation="primary"
+        af-Full-Width={false}
         onAfOnClick={() => !prevDisabled && onPageChange(page - 1)}
         aria-disabled={prevDisabled}
+        className={`af-Variation-primary ${prevDisabled ? "disabled" : ""}`}
       >
         Föregående
       </DigiButton>
@@ -165,22 +166,24 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
       {visiblePages.map((p) => (
         <DigiButton
           key={p}
-          afSize="small"
-          afVariation={page === p ? "primary" : "secondary"}
-          afFullWidth={false}
+          af-Variation="secondary"
+          af-Size="small"
+          af-Full-Width={false}
           onAfOnClick={() => onPageChange(p)}
           aria-current={page === p ? "true" : undefined}
+          className={`af-Variation-${page === p ? "primary" : "secondary"} ${page === p ? "active" : ""}`}
         >
           {p}
         </DigiButton>
       ))}
 
       <DigiButton
-        afSize="small"
-        afVariation={nextDisabled ? "secondary" : "primary"}
-        afFullWidth={false}
+        af-Size="small"
+        af-Variation="secondary"
+        af-Full-Width={false}
         onAfOnClick={() => !nextDisabled && onPageChange(page + 1)}
         aria-disabled={nextDisabled}
+        className={`af-Variation-secondary ${nextDisabled ? "disabled" : ""}`}
       >
         Nästa
       </DigiButton>
