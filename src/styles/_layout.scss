@@ -1,0 +1,105 @@
+@import 'variables';
+
+/* Header's background color */
+.digi-layout-block--primary.sc-digi-header {
+  background-color: $primary-cl !important;
+}
+
+digi-header [class*='system-name'],
+digi-header [class*='navigation-item'] a {
+  @include heading-font;
+}
+
+.header-logo {
+  height: 60px;
+  width: auto;
+  position: absolute;
+  left: -0.5px;
+  @media (min-width: 992px) {
+    height: 65px;
+  }
+}
+
+/* TechStart color */
+digi-header [class*='system-name'] {
+  color: $light-text-cl;
+}
+
+/* Header's navigation */
+.sc-digi-header-navigation-item-h .sc-digi-header-navigation-item-s > a {
+  color: $light-text-cl;
+  background-color: $primary-cl;
+}
+
+/* Header's navigation active underline */
+.digi-header-navigation-item-indicator.digi-header-navigation-item--active {
+  background-color: $accent-cl !important;
+}
+
+.sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
+  border: none;
+}
+
+.digi-header-navigation-item-indicator.sc-digi-header-navigation-item {
+  background-color: transparent;
+  transition: background-color 0.15s ease-in-out;
+}
+
+/* Nav on hover */
+.sc-digi-header-navigation-item-h .sc-digi-header-navigation-item-s > a:hover {
+  color: $dark-text-cl;
+  background-color: $accent-cl;
+  text-decoration: none;
+}
+
+/* MOBILE - Header's menu text color */
+.sc-digi-button-h .digi-button--variation-function.sc-digi-button,
+.sc-digi-icon-bars-h svg.sc-digi-icon-bars,
+.sc-digi-icon-x-h svg.sc-digi-icon-x {
+  color: $light-text-cl;
+}
+
+/* MOBILE - Header's menu background color */
+.sc-digi-header-navigation-h .digi-header-navigation__wrapper.sc-digi-header-navigation {
+  background-color: $primary-cl;
+}
+
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner.sc-digi-header-navigation-s
+  > digi-header-navigation-item,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner
+  .sc-digi-header-navigation-s
+  > digi-header-navigation-item,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner.sc-digi-header-navigation-s
+  > digi-header-navigation-item:first-child,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner.sc-digi-header-navigation-s
+  > digi-header-navigation-item,
+.sc-digi-header-navigation-h
+  .digi-header-navigation--mobile
+  .digi-header-navigation__inner
+  .sc-digi-header-navigation-s
+  > digi-header-navigation-item:first-child {
+  border: none;
+}
+
+/* Footer's background color */
+.sc-digi-layout-block-h .digi-layout-block--profile.sc-digi-layout-block {
+  background-color: $primary-cl;
+}
+
+.footer-content {
+  color: $light-text-cl;
+  @include heading-font;
+}
+
+.footer-logo {
+  height: 100px;
+  width: auto;
+}

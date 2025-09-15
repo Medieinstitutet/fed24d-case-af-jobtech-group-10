@@ -8,14 +8,13 @@ $accent-light-cl: #faf9ee;
 $dark-text-cl: #334155;
 $light-text-cl: #faf9ee;
 
-/* Fonts */
-.heading-font {
-  font-family: 'Sintony', sans-serif;
-  font-weight: 700;
+/* mixins fonts */
+@mixin heading-font {
+  font-family: 'Sintony', sans-serif !important;
+  font-weight: 700 !important;
 }
 
-.body-font {
-  font-family: 'Sen', sans-serif;
-  font-size: 1rem;
-  font-weight: 450;
+@mixin body-font {
+  font-family: 'Sen', sans-serif !important;
+  font-weight: 450 !important;
 }
