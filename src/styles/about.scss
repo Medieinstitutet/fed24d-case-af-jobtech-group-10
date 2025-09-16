@@ -1,0 +1,55 @@
+.about-page {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+
+  .about-container {
+    max-width: 700px;
+    width: 100%;
+    padding: 1rem;
+
+    .about-logo {
+      width: 200px;
+      margin: 0 auto 2rem auto;
+      display: block;
+    }
+
+    .team {
+      display: flex;
+      justify-content: center; 
+      gap: 3rem; 
+      margin-top: 2rem;
+      flex-wrap: wrap;
+
+      .team-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 1rem;
+
+        .team-photo {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-bottom: 0.5rem;
+        }
+
+        .team-name {
+          font-weight: bold;
+          font-size: 1rem;
+          color: #333;
+        }
+      }
+    }
+
+    p {
+      margin-bottom: 1.5rem;
+      line-height: 1.8; // lite luftigare radavstånd
+      color: #333;
+      font-size: 1rem;
+      text-align: justify; // gör texten mer jämn i blocket
+    }
+  }
+}
