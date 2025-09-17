@@ -2,7 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getJobDetails } from '../services/jobService';
 import type { JobAd } from '../models/IJobs';
-import { DigiIconArrowLeft } from '@digi/arbetsformedlingen-react';
+import { DigiIconArrowLeft, DigiIconArrowUp } from '@digi/arbetsformedlingen-react';
 
 export default function JobDetail() {
   const { id } = useParams<{ id: string }>();
@@ -53,7 +53,7 @@ export default function JobDetail() {
 
       <div className="job-detail__header">
         <h1 className="job-detail__title">
-          {job.headline} <span className="job-detail__title-sep">till</span>{' '}
+          {job.headline} till{' '}
           <span className="job-detail__company">{job.workplace ?? 'Company name'}</span>
         </h1>
 
@@ -71,7 +71,7 @@ export default function JobDetail() {
 
         {job.application_deadline && (
           <p className="job-detail__deadline">
-            Apply latest: {new Date(job.application_deadline).toLocaleDateString('sv-SE')}
+            Ansök senast: {new Date(job.application_deadline).toLocaleDateString('sv-SE')}
           </p>
         )}
 
@@ -128,10 +128,10 @@ export default function JobDetail() {
       {/* Tillbaka till top */}
       <button
         className="job-detail__fab"
-        aria-label="Back to top"
+        aria-label="Tillbaka till top"
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
-        ↑
+        <DigiIconArrowUp />
       </button>
     </main>
   );
