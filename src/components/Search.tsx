@@ -3,15 +3,8 @@ import { searchJuniorTechJobs, getTopCitiesForJuniorTech } from "../services/job
 import type { JobAd } from "../models/IJobs";
 import type { CityStat } from "../services/jobService";
 import type { TaxonomyConcept } from "../services/taxonomyService";
-import { Link } from "react-router-dom";
 import "../styles/Search.scss";
-import { DigiButton, DigiLoaderSpinner } from "@digi/arbetsformedlingen-react";
-
-type PaginationProps = {
-  page: number;
-  totalPages: number;
-  onPageChange: (newPage: number) => void;
-};
+import { DigiButton, DigiLoaderSpinner, DigiInfoCard, DigiFormInputSearch, DigiFormFilter } from "@digi/arbetsformedlingen-react";
 
 // --------------------
 // Sökformulär
@@ -19,19 +12,14 @@ type PaginationProps = {
 function SearchForm({
   query,
   setQuery,
-  filterCity,
   setFilterCity,
-  selectedOccupationGroup,
   setSelectedOccupationGroup,
-  selectedOccupation,
   setSelectedOccupation,
-  workingHours,
   setWorkingHours,
   cities,
   workingHoursOptions,
   occupationGroupOptions,
   occupationOptions,
-  onSearch,
 }: {
   query: string;
   setQuery: (q: string) => void;
@@ -51,49 +39,63 @@ function SearchForm({
 }) {
   return (
     <div className="search-form">
-      <input
-        type="text"
-        placeholder="Sök bland junior techjobb..."
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
+      {/* Sökfält */}
+      <DigiFormInputSearch
+        af-Label="Sök bland junior techjobb"
+        af-Variation="medium"
+        af-Type="search"
+        af-Button-Text="Sök"
+        afValue={query}
+        onChange={(e) => {
+          const target = e.target as HTMLInputElement;
+          setQuery(target.value);
+        }}
       />
 
-      <select value={filterCity} onChange={(e) => setFilterCity(e.target.value)}>
-        <option value="">Alla städer</option>
-        {cities.map((c) => (
-          <option key={c.id} value={c.id}>{c.name}</option>
-        ))}
-      </select>
+      <DigiFormFilter
+        afFilterButtonText="Välj stad"
+        afSubmitButtonText="Filtrera"
+        afName="Stad"
+        afListItems={[{ id: "", label: "Alla städer" }, ...cities.map((c) => ({ id: c.id, label: c.name }))]}
+        onAfSubmitFilter={(e: CustomEvent) => {
+          // e.detail.checked innehåller alla valda id
+          const selected = e.detail.checked[0] || ""; 
+          setFilterCity(selected);
+        }}
+      />
 
-      <select value={workingHours} onChange={(e) => setWorkingHours(e.target.value)}>
-        <option value="">Alla anställningstyper</option>
-        {workingHoursOptions.map((opt) => (
-          <option key={opt.id} value={opt.id}>{opt.label}</option>
-        ))}
-      </select>
+      <DigiFormFilter
+        afFilterButtonText="Anställningstyp"
+        afSubmitButtonText="Filtrera"
+        afName="Anställningstyp"
+        afListItems={[{ id: "", label: "Alla anställningstyper" }, ...workingHoursOptions]}
+        onAfSubmitFilter={(e: CustomEvent) => {
+          const selected = e.detail.checked[0] || "";
+          setWorkingHours(selected);
+        }}
+      />
 
-      <select value={selectedOccupationGroup} onChange={(e) => setSelectedOccupationGroup(e.target.value)}>
-        <option value="">Alla yrkesgrupper</option>
-        {occupationGroupOptions.map((opt) => (
-          <option key={opt.id} value={opt.id}>{opt.label}</option>
-        ))}
-      </select>
+      <DigiFormFilter
+        afFilterButtonText="Yrkesgrupp"
+        afSubmitButtonText="Filtrera"
+        afName="Yrkesgrupp"
+        afListItems={[{ id: "", label: "Alla yrkesgrupper" }, ...occupationGroupOptions]}
+        onAfSubmitFilter={(e: CustomEvent) => {
+          const selected = e.detail.checked[0] || "";
+          setSelectedOccupationGroup(selected);
+        }}
+      />
 
-      <select value={selectedOccupation} onChange={(e) => setSelectedOccupation(e.target.value)}>
-        <option value="">Alla yrkesroller</option>
-        {occupationOptions.map((opt) => (
-          <option key={opt.id} value={opt.id}>{opt.label}</option>
-        ))}
-      </select>
-
-      <DigiButton
-        afSize="medium"
-        afVariation="primary"
-        afFullWidth={false}
-        onAfOnClick={onSearch}
-      >
-        Sök
-      </DigiButton>
+      <DigiFormFilter
+        afFilterButtonText="Yrkesroll"
+        afSubmitButtonText="Filtrera"
+        afName="Yrkesroll"
+        afListItems={[{ id: "", label: "Alla yrkesroller" }, ...occupationOptions]}
+        onAfSubmitFilter={(e: CustomEvent) => {
+          const selected = e.detail.checked[0] || "";
+          setSelectedOccupation(selected);
+        }}
+      />
     </div>
   );
 }
@@ -105,31 +107,40 @@ function JobResultsList({ jobs }: { jobs: JobAd[] }) {
   if (!jobs.length) return <p>Inga jobbannonser hittades</p>;
 
   return (
-    <div className="job-results">
-      {jobs.map((job) => (
-        <Link to={`/job/${job.id}`} key={job.id} className="job-card-link">
-          <div className="job-card">
-            <h3>{job.headline}</h3>
-            <p>{job.workplace}</p>
-            <p>{job.city || "Okänd stad"}</p>
-            {job.working_hours_type && (
-              <span className={`working-hours ${job.working_hours_type.label.toLowerCase()}`}>
-                {job.working_hours_type.label}
-              </span>
-            )}
-            <DigiButton className="read-more" afSize="medium" afVariation="primary" afFullWidth={false}>
-              Läs mer
-            </DigiButton>
-          </div>
-        </Link>
-      ))}
-    </div>
+  <div className="job-results">
+    {jobs.map((job) => (
+      <DigiInfoCard
+        key={job.id}
+        af-Heading={job.headline}
+        af-Heading-Level="h3"
+        af-Type="tip"
+        af-Variation="primary"
+        af-Size="standard"
+        af-link-text="Läs mer"
+        af-link-href={`/job/${job.id}`}	
+      >
+        <p>{job.workplace}</p>
+        <p>{job.city || "Okänd stad"}</p>
+        {job.working_hours_type && (
+          <span className={`working-hours ${job.working_hours_type.label.toLowerCase()}`}>
+            {job.working_hours_type.label}
+          </span>
+        )}
+      </DigiInfoCard>
+    ))}
+  </div>
   );
 }
 
 // --------------------
 // Pagination
 // --------------------
+type PaginationProps = {
+  page: number;
+  totalPages: number;
+  onPageChange: (newPage: number) => void;
+};  
+
 function getPageNumbers(page: number, totalPages: number, maxVisible: number = 5): number[] {
   const half = Math.floor(maxVisible / 2);
   let start = Math.max(1, page - half);
@@ -152,38 +163,38 @@ function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
 
   return (
     <div className="pagination">
+      {/* Föregående */}
       <DigiButton
         afSize="small"
-        afVariation="primary"
+        afVariation="secondary"
         afFullWidth={false}
-        onAfOnClick={() => { if (prevDisabled) return; onPageChange(page - 1);}}
-        aria-disabled={prevDisabled}
-        className={`af-Variation-primary ${prevDisabled ? "disabled" : ""}`}
+        onAfOnClick={() => !prevDisabled && onPageChange(page - 1)}
+        aria-disabled={prevDisabled ? "true" : undefined} // OBS: string
       >
         Föregående
       </DigiButton>
 
+      {/* Sidnummer */}
       {visiblePages.map((p) => (
         <DigiButton
           key={p}
-          afVariation="secondary"
           afSize="small"
+          afVariation={page === p ? "primary" : "secondary"}
           afFullWidth={false}
           onAfOnClick={() => onPageChange(p)}
-          aria-current={page === p ? "true" : undefined}
-          className={`af-Variation-${page === p ? "primary" : "secondary"} ${page === p ? "active" : ""}`}
+          aria-current={page === p ? "true" : undefined} // markerar aktuell sida
         >
           {p}
         </DigiButton>
       ))}
 
+      {/* Nästa */}
       <DigiButton
         afSize="small"
         afVariation="secondary"
         afFullWidth={false}
-        onAfOnClick={() => { if (nextDisabled) return; onPageChange(page + 1);}}
-        aria-disabled={nextDisabled}
-        className={`af-Variation-secondary ${nextDisabled ? "disabled" : ""}`}
+        onAfOnClick={() => !nextDisabled && onPageChange(page + 1)}
+        aria-disabled={nextDisabled ? "true" : undefined} // OBS: string
       >
         Nästa
       </DigiButton>
@@ -274,6 +285,8 @@ export default function Search() {
     init();
   }, [handleSearch]);
 
+
+
   return (
     <>
     <h3 className="findjob">Hitta ditt nästa jobb</h3>
@@ -297,11 +310,15 @@ export default function Search() {
       />
 
       {loading ? (
-        <DigiLoaderSpinner af-size="medium" afText="Lediga techjobben laddar" />
+        <div className="loader-container">
+          <DigiLoaderSpinner af-size="medium" afText="Hämtar de senaste lediga techjobben..." />
+        </div>
       ) : (
         <>
-        <p className="results-count"> {totalJobs} {totalJobs === 1 ? "träff" : "träffar"} </p>
-        <JobResultsList jobs={results} />
+          <p className="results-count">
+            {totalJobs} {totalJobs === 1 ? "träff" : "träffar"}
+          </p>
+          <JobResultsList jobs={results} />
         </>
       )}
 

@@ -122,7 +122,11 @@ export default function Dashboard() {
   }, []);
 
   if (loading)
-    return <DigiLoaderSpinner af-size="medium" af-text="Håll ut, dashboard laddar" />;
+  return (
+    <div className="loader-container">
+      <DigiLoaderSpinner af-size="medium" afText="Snart klart! Dashboard laddas..." />
+    </div>
+  );
 
   return (
     <div className="dashboard">
