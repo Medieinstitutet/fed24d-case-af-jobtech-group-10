@@ -1,0 +1,269 @@
+@import 'variables';
+
+/* Loader */
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* Rubrik */
+.findjob {
+  @include heading-font;
+  background-color: $accent-light-cl;
+  padding-top: 50px;
+  padding-bottom: 20px;
+  margin: 0;
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 2rem;
+  color: $dark-text-cl;
+}
+
+/* Sök och filtrering */
+.digi-form-input--button-variation-primary.digi-form-input--has-button-true.sc-digi-form-input .digi-form-input__input.sc-digi-form-input {
+  background-color: $accent-light-cl;
+  border: 1px solid $dark-text-cl;
+  height: 40px;
+}
+
+.digi-form-input--button-variation-primary .digi-form-input__input-wrapper.sc-digi-form-input-s>[slot^=button] button {
+  background-color: $primary-cl;
+  color: $light-text-cl;
+  width: 80px;
+  padding-left: 10px;
+}
+
+.search-form .sc-digi-button-h .digi-button--size-medium.sc-digi-button,
+.sc-digi-icon-chevron-down-h svg.sc-digi-icon-chevron-down {
+  color: $accent-light-cl;
+}
+
+.search {
+  @include heading-font;
+  background-color: $accent-light-cl;
+}
+
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 20px 20px 20px;
+
+  input,
+  select,
+  button {
+    @include body-font;
+    padding: 8px;
+    font-size: 1rem;
+    background-color: $accent-light-cl;
+    border-radius: 8px;
+  }
+
+  input,
+  option {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .sc-digi-button-h .digi-button--size-medium.sc-digi-button {
+    background-color: $primary-cl;
+    border: 1px solid $primary-cl;
+  }
+}
+
+/* Antal träffar som visas över sökresultaten */
+.results-count {
+  margin-left: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: $dark-text-cl;
+}
+
+/* Job results grid */
+.job-results .sc-digi-info-card-h .digi-info-card__content.sc-digi-info-card {
+  display: flex;
+  flex-direction: column;
+  align-items:start;
+  text-align: left !important;
+  justify-content: end;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px; 
+  background-color: $accent-cl;
+  border-radius: 8px;
+  box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Rutnär för korten */
+.job-results {
+  display: grid;
+  gap: 24px;
+  margin: 20px auto;
+  padding: 0 20px;
+  justify-content: center; 
+
+  // Mobil: 1 kort per rad
+  grid-template-columns: 1fr;
+
+  // Tablet: 2 kort per rad
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+  }
+
+  // Desktop: 3 kort per rad
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, minmax(320px, 1fr));
+  }
+
+  // Större desktop: 4 kort per rad
+  @media (min-width: 1440px) {
+    grid-template-columns: repeat(4, minmax(320px, 1fr));
+  }
+}
+
+/* Länk på hela kortet */
+.job-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  color: $accent-cl;
+}
+
+/* Kortets utseende */
+.sc-digi-info-card-h .digi-info-card__content.sc-digi-info-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: $accent-cl;
+  border-radius: 8px;
+  padding: 16px;
+  height: 100%;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  }
+
+  h3, p, span {
+    text-align: left;
+    margin: 0;
+    color: $dark-text-cl;
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+  }
+
+  .working-hours {
+    @include body-font;
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 1rem;
+    font-weight: bold !important;
+    border-radius: 4px;
+    margin-top: 4px;
+    margin-bottom: 10px;
+    width: 50px;
+    text-align: center;
+    margin-top: 10px;
+
+    &.heltid {
+      background-color: $accent-light-cl;
+      color: $dark-text-cl;
+    }
+    &.deltid {
+      background-color: $dark-text-cl;
+      color: $accent-light-cl;
+    }
+  }
+
+  /* Läs mer */
+  .sc-digi-link-s>a [class*=digi-icon],
+  .sc-digi-link-s>a {
+    color: $light-text-cl;
+    background-color: $primary-cl;
+    border-radius: 4px;
+    padding: 2px;
+    gap: 1px;
+  }
+}
+
+
+// Numrering //
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 20px 0 30px;
+
+    .digi-button {
+      min-width: 30px;
+      padding: 3px 12px;
+      transition: all 0.2s ease;
+
+      @media (min-width: 480px) {
+        .pagination {
+          gap: 8px;
+
+        .digi-button {
+          min-width: 30px;
+          padding: 4px 8px; 
+          font-size: 0.8rem; 
+          }
+        }
+      }
+
+    // Hover
+    &:not([aria-disabled="true"]):hover {
+      transform: scale(1.05);
+      background-color: $secondary-cl;
+      border: 1px solid $secondary-cl;
+      cursor: pointer;
+    }
+
+    // Inaktiva knappar
+    &[aria-disabled="true"] {
+      cursor: default;
+      opacity: 0.5;
+      pointer-events: none;
+      background-color: transparent !important;
+      color: #ccc !important;
+      border: 1px solid #ccc !important;
+    }
+
+    // Primär knapp (aktuell sida)
+    &.digi-button--variation-primary,
+    &[aria-current="true"] {
+      background-color: $primary-cl !important;
+      color: $accent-light-cl !important;
+      font-weight: bold;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      font-size: 1rem;
+    }
+
+    // Sekundär knapp (övriga sidor)
+    &.digi-button--variation-secondary {
+      background-color: $accent-light-cl;
+      color: $dark-text-cl;
+      text-align: center;
+
+      &[aria-current="true"] {
+        background-color: $primary-cl !important;
+        color: $light-text-cl !important;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+      }
+    }
+  }
+}

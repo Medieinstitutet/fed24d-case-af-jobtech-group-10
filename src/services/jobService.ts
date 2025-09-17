@@ -86,7 +86,7 @@ export async function searchJuniorTechJobs(
   const params: Record<string, string | number> = {
     limit,
     offset: (page - 1) * limit,
-    q: query ? `${query} junior tech` : "junior tech",
+    q: query && query.trim() !== "" ? query : "junior tech", // 🚀 fix
     "occupation-field": "apaJ_2ja_LuF",
   };
 
