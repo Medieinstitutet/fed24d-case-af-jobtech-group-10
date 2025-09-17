@@ -1,8 +1,11 @@
-@use '../styles/variables' as *;
+@import 'variables';
 
-html, body {
-  height: 100%; 
-  margin: 0;
+.loader-container {
+  display: flex;
+  justify-content: center;  
+  align-items: center;    
+  min-height: 200px;   
+  font-weight: bold;
 }
 
 .dashboard {
@@ -23,7 +26,7 @@ html, body {
   color: $dark-text-cl;
 }
 
-.sc-digi-info-card-h .digi-info-card__content.sc-digi-info-card {
+.dashboard .sc-digi-info-card-h .digi-info-card__content.sc-digi-info-card {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -35,20 +38,21 @@ html, body {
   background-color: $accent-cl;
   border-radius: 8px;
   box-shadow: 0 0px 6px rgba(0, 0, 0, 0.1);
+  transform: none !important;
+  cursor: default !important;
 }
 
 .sc-digi-info-card-h .digi-info-card--primary.sc-digi-info-card {
   background-color:$accent-light-cl;
-
 }
 
 .dashboard__total {
-  font-size: 2rem;
   font-weight: bold;
   text-align: center;
   margin-top: 10px; 
   color: $dark-text-cl;
   font-family: 'Sen', sans-serif;
+  font-size: 1.7rem !important; 
 }
 
 ul {
@@ -71,6 +75,11 @@ li {
   font-weight: 450;
 }
 
+li:hover {
+  transform: scale(1.05);     
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
 digi-typography a {
   color: $dark-text-cl;
   font-size: 16px;
@@ -81,13 +90,16 @@ digi-typography a {
   font-family: 'Sen', sans-serif;
 }
 
-digi-typography p {
+digi-typography a:visited {
   color: $dark-text-cl;
-  font-family: 'Sen', sans-serif;
 }
 
-a:hover {
-  text-decoration: underline; 
+digi-typography a:hover {
+  text-decoration: none;
+}
+
+.sc-digi-bar-chart-h .chartTitle.sc-digi-bar-chart {
+  padding-bottom: 10px;
 }
 
 .bar {
@@ -104,7 +116,6 @@ a:hover {
 .sc-digi-icon-table-h svg.sc-digi-icon-table {
   color: $primary-cl;
   font-family: 'Sen', sans-serif;
-  font-size: 1rem;
   font-weight: 450;
   text-decoration: none;
 }

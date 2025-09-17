@@ -8,10 +8,10 @@ import type { JobAd } from "../models/IJobs";
 import type { CityStat } from "../services/jobService";
 
 import { DigiInfoCard, DigiBarChart, DigiLoaderSpinner } from "@digi/arbetsformedlingen-react";
-import "./Dashboard.scss";
+import "../styles/Dashboard.scss";
 
 // --------------------
-// Toppstäder diagram (Junior techjobb statistik)
+// Dashboard 2 - Toppstäder diagram (Junior techjobb statistik)
 // --------------------
 export function TopCitiesChart({ cities }: { cities: CityStat[] }) {
   const chartRef = useRef<HTMLDigiBarChartElement | null>(null);
@@ -74,7 +74,7 @@ export function TopCitiesChart({ cities }: { cities: CityStat[] }) {
 }
 
 // --------------------
-// Senaste juniorjobb-listan
+// Dashboard 3 - Senaste juniorjobb-listan
 // --------------------
 function LatestJobsList({ jobs }: { jobs: JobAd[] }) {
   if (!jobs || jobs.length === 0) return <p>Inga jobbannonser</p>;
@@ -122,23 +122,27 @@ export default function Dashboard() {
   }, []);
 
   if (loading)
-    return <DigiLoaderSpinner af-size="medium" af-text="Håll ut, dashboard laddar" />;
+  return (
+    <div className="loader-container">
+      <DigiLoaderSpinner af-size="medium" afText="Snart klart! Dashboard laddas..." />
+    </div>
+  );
 
   return (
     <div className="dashboard">
-      {/* Totalt antal junior techjobb */}
+      {/* Dashboard 1 - Totalt antal junior techjobb */}
       <DigiInfoCard af-heading="Totalt antal junior techjobb idag" af-heading-level="h2" className="dashboard__card">
         <p className="dashboard__total">{total}</p>
       </DigiInfoCard>
 
-      {/* Toppstäder för junior techjobb */}
+      {/* Dashboard 2 - Toppstäder för junior techjobb */}
       <DigiInfoCard af-heading="Toppstäder – Junior techjobb" af-heading-level="h2" className="dashboard__card">
         <div>
           <TopCitiesChart cities={cities} />
         </div>
       </DigiInfoCard>
 
-      {/* Nya juniorjobb annonser */}
+      {/* Dashboard 3 - Nya juniorjobb annonser */}
       <DigiInfoCard af-heading="Nya juniorjobbannonser" af-heading-level="h2" className="dashboard__card">
         <LatestJobsList jobs={latest} />
       </DigiInfoCard>
