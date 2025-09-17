@@ -95,7 +95,7 @@ digi-header [class*='system-name'] {
 }
 
 .footer-content {
-  color: $light-text-cl;
+  color: $light-text-cl !important;
   @include heading-font;
 }
 

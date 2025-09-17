@@ -1,9 +1,10 @@
 export interface JobAd {
   id: string;
-  external_id: string;
+  external_id?: string;
   headline: string;
   workplace: string;
   city?: string;
+  logo_url?: string;
   municipality?: string;
   region?: string;
   country?: string;
@@ -11,6 +12,7 @@ export interface JobAd {
   application_deadline?: string;
   description?: string;
   salary_description?: string;
+  
   occupation?: {                      //objekt för filtrering
     concept_id: string;
     label: string;
@@ -38,7 +40,10 @@ export interface JobAd {
 export interface JobHit {
   id: string;
   headline: string;
-  webpage_url: string;
+  workplace?: string;
+  city?: string;
+  logo_url?: string;
+  webpage_url?: string;
   occupation_field?: {
     concept_id: string;
     label: string;

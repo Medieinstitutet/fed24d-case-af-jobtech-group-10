@@ -41,8 +41,8 @@ export default function Layout() {
 
       {/* Footer */}
       <DigiFooter afVariation={FooterVariation.SMALL}>
-        <div slot="content-bottom-left" className="footer-content">
-          <p>TechStart &copy; 2025</p>
+        <div slot="content-bottom-left">
+          <p className="footer-content">TechStart &copy; 2025</p>
           <Link to="/">
             <img src="/circular_techstart_logo.png" className="footer-logo" alt="TechStart logga" />
           </Link>

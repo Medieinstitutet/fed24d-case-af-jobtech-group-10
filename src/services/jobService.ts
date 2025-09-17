@@ -17,50 +17,58 @@ export async function getJobDetails(id: string): Promise<JobAd | null> {
   // Filtrera bort jobb som inte tillhör yrkesområdet Data/IT
   if (ad.occupation_field?.concept_id !== "apaJ_2ja_LuF") return null;
 
-  return {
-    id: ad.id,
+  const job: JobAd = {
+    id: String(ad.id ?? id),
     external_id: ad.external_id,
-    headline: ad.headline || ad.label || "Ingen titel",
-    workplace: ad.employer?.workplace || ad.webpage_url || "Okänt företag",
-    city: ad.workplace_address?.municipality || ad.city || "Okänd stad",
-    municipality: ad.workplace_address?.municipality_concept_id || ad.workplace_address?.municipality || "",
+    headline: ad.headline || ad.label || 'Ingen titel',
+    workplace: ad.workplace ?? ad.employer?.name ?? 'Okänt företag',
+    city: ad.workplace_address?.municipality ?? ad.city ?? "Okänd stad",
+    municipality: ad.workplace_address?.municipality_concept_id ?? ad.workplace_address?.municipality ?? '',
     region: ad.workplace_address?.region,
     country: ad.workplace_address?.country,
     published: ad.publication_date,
     application_deadline: ad.application_deadline,
-    description: ad.description?.text,
-    working_hours_type: ad.working_hours_type
-      ? {
-          concept_id: ad.working_hours_type.concept_id,
-          label: ad.working_hours_type.label,
-          legacy_ams_taxonomy_id: ad.working_hours_type.legacy_ams_taxonomy_id,
-        }
-      : undefined,
+    description:
+      ad.description?.text_formatted ??
+      ad.description?.text ??
+      ad.description_html ??
+      ad.description_text ??
+      ad.description ??
+      undefined,
     salary_description: ad.salary_description,
-    occupation: ad.occupation
-      ? { 
-          concept_id: ad.occupation.concept_id,
-          label: ad.occupation.label,
-          legacy_ams_taxonomy_id: ad.occupation.legacy_ams_taxonomy_id,
-        }
-      : undefined,
-    occupation_group: ad.occupation_group
-      ? {                     
-          concept_id: ad.occupation_group.concept_id,
-          label: ad.occupation_group.label,
-          legacy_ams_taxonomy_id: ad.occupation_group.legacy_ams_taxonomy_id,
-        }
-      : undefined,
+    logo_url:
+      ad.logo_url ??
+      ad.logoUrl ??
+      ad.employer?.logo_url ??
+      ad.employer?.logoUrl ??
+      undefined,
+    application_url:
+      ad.application_details?.url ??
+      ad.webpage_url ??
+      undefined,
+    working_hours_type: ad.working_hours_type && {
+      concept_id: ad.working_hours_type.concept_id,
+      label: ad.working_hours_type.label,
+      legacy_ams_taxonomy_id: ad.working_hours_type.legacy_ams_taxonomy_id,
+    },
+    occupation: ad.occupation && {
+      concept_id: ad.occupation.concept_id,
+      label: ad.occupation.label,
+      legacy_ams_taxonomy_id: ad.occupation.legacy_ams_taxonomy_id,
+    },
+    occupation_group: ad.occupation_group && {
+      concept_id: ad.occupation_group.concept_id,
+      label: ad.occupation_group.label,
+      legacy_ams_taxonomy_id: ad.occupation_group.legacy_ams_taxonomy_id,
+    },
     occupation_field: ad.occupation_field?.label,
-    application_url: ad.application_details?.url || ad.webpage_url,
-    employment_type: ad.employment_type
-      ? {
-          concept_id: ad.employment_type.concept_id,
-          label: ad.employment_type.label,
-          legacy_ams_taxonomy_id: ad.employment_type.legacy_ams_taxonomy_id,
-        }
-      : undefined,
+    employment_type: ad.employment_type && {
+      concept_id: ad.employment_type.concept_id,
+      label: ad.employment_type.label,
+      legacy_ams_taxonomy_id: ad.employment_type.legacy_ams_taxonomy_id,
+    },
   };
+  return job;
 }
 
 // --------------------
