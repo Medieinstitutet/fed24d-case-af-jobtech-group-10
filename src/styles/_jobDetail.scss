@@ -1,5 +1,10 @@
 @import 'variables';
 
+// List
+li {
+  list-style: none;
+}
+
 // Back button
 .sc-digi-icon-arrow-left-h svg.sc-digi-icon-arrow-left,
 .sc-digi-icon-arrow-up-h svg.sc-digi-icon-arrow-up {
