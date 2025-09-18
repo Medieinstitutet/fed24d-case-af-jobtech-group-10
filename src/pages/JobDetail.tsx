@@ -35,7 +35,7 @@ export default function JobDetail() {
   return (
     <main className="job-detail">
       <div className="job-detail__topbar">
-        <Link to="/" className="job-detail__back">
+        <Link to="/search" className="job-detail__back">
           <DigiIconArrowLeft />
         </Link>
         <div className="job-detail__brand">
@@ -46,7 +46,7 @@ export default function JobDetail() {
               onError={(e) => ((e.currentTarget as HTMLImageElement).src = '/default-logo.png')}
             />
           ) : (
-            <span className="job-detail__brand-fallback">Företagets logga</span>
+            <span className="job-detail__brand-fallback">Företagets logga saknas</span>
           )}
         </div>
       </div>
@@ -104,16 +104,16 @@ export default function JobDetail() {
         <div className="job-detail__map">Map showing the office location</div>
       </section> */}
 
-      <section className="job-detail__contact">
-        <h3>Contact information</h3>
+      <section className="job-detail__card">
+        <h3>Kontaktuppgifter</h3>
         <div className="job-detail__contact-grid">
           <div>
             <div className="label">E-post</div>
-            <div className="value">—</div>
+            <div className="value">{job.email ?? 'saknas'}</div>
           </div>
           <div>
             <div className="label">Telefonummer</div>
-            <div className="value">—</div>
+            <div className="value">{job.phone_number ?? 'saknas'}</div>
           </div>
         </div>
       </section>

@@ -13,7 +13,8 @@ li {
 
 // Back to top
 .sc-digi-icon-arrow-up-h svg.sc-digi-icon-arrow-up {
-  width: 25px; height: 25px;
+  width: 25px;
+  height: 25px;
 }
 
 .job-detail {
@@ -26,20 +27,23 @@ li {
   &__topbar {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
+    margin-top: 2rem;
+    text-align: center;
   }
 
   &__back {
-    width: 32px; height: 32px;
+    width: 32px;
+    height: 32px;
+    margin-left: 20px;
   }
 
   &__brand {
-    margin: 0 auto;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 2.5rem;
     width: 100px;
     height: 40px;
-    display: grid;
-    place-items: center;
 
     img {
       max-width: 100%;
@@ -49,8 +53,8 @@ li {
   }
 
   &__brand-fallback {
-    opacity: .9;
-    font-size: .9rem;
+    opacity: 0.9;
+    font-size: 0.9rem;
   }
 
   /* HEADER */
@@ -71,13 +75,13 @@ li {
   &__meta {
     color: $dark-text-cl;
     margin-top: 2px;
-    font-size: .95rem;
+    font-size: 0.95rem;
   }
 
   &__deadline {
     margin-top: 6px;
     color: $dark-text-cl;
-    font-size: .95rem;
+    font-size: 0.95rem;
   }
 
   &__apply {
@@ -90,10 +94,17 @@ li {
     color: $dark-text-cl;
     text-decoration: none;
     font-weight: 700;
-    transition: transform .1s ease, filter .15s ease;
+    transition:
+      transform 0.1s ease,
+      filter 0.15s ease;
 
-    &:hover { transform: translateY(-1px); filter: brightness(0.97); }
-    &:active { transform: translateY(0); }
+    &:hover {
+      transform: translateY(-1px);
+      filter: brightness(0.97);
+    }
+    &:active {
+      transform: translateY(0);
+    }
   }
 
   /* CARDS */
@@ -103,21 +114,24 @@ li {
     padding: 14px;
     border-radius: 12px;
 
-    h2, h3 { margin: 0 0 10px; }
+    h2,
+    h3 {
+      margin: 0 0 10px;
+    }
   }
 
   /* CONTACT */
-  &__contact {
-    margin: 16px;
-  }
-
   &__contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    display: flex;
+    gap: 10rem;
 
-    .label { font-weight: 700; margin-bottom: 4px; }
-    .value { color: #6b7280; }
+    .label {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .value {
+      color: #6b7280;
+    }
   }
 
   /* AD FOOTER */
@@ -126,7 +140,7 @@ li {
     color: $dark-text-cl;
     display: grid;
     gap: 4px;
-    font-size: .9rem;
+    font-size: 0.9rem;
     text-align: center;
   }
 
@@ -137,28 +151,52 @@ li {
     place-content: center;
     right: 30px;
     bottom: 30px;
-    width: 60px; height: 60px;
+    width: 60px;
+    height: 60px;
     border-radius: 999px;
-    background: rgba(0,0,0,.3);
-    color: $accent-light-cl;
+    background: rgba(0, 0, 0, 0.3);
+    color: $light-text-cl;
     border: none;
     font-size: 20px;
     cursor: pointer;
     backdrop-filter: blur(3px);
-    transition: transform .15s ease;
+    transition: transform 0.15s ease;
 
-    &:hover { transform: translateY(-2px); }
+    &:hover {
+      transform: translateY(-2px);
+    }
   }
 }
 
 @media (min-width: 640px) {
-  .job-detail__header { padding-inline: 24px; }
-  .job-detail__card { margin-inline: 24px; padding: 16px; }
-  .job-detail__title { font-size: 1.35rem; }
+  .job-detail__header {
+    padding-inline: 24px;
+  }
+  .job-detail__card {
+    margin-inline: 24px;
+    padding: 16px;
+  }
+  .job-detail__title {
+    font-size: 1.35rem;
+  }
+  .job-detail__back {
+    margin-left: 50px;
+  }
 }
 
 @media (min-width: 960px) {
-  .job-detail__header { padding-inline: 32px; }
-  .job-detail__card { margin-inline: auto; max-width: 680px; }
-  .job-detail__footer { max-width: 680px; margin-inline: auto; }
+  .job-detail__header {
+    padding-inline: 32px;
+  }
+  .job-detail__card {
+    margin-inline: auto;
+    max-width: 680px;
+  }
+  .job-detail__footer {
+    max-width: 680px;
+    margin-inline: auto;
+  }
+  .job-detail__back {
+    margin-left: 100px;
+  }
 }

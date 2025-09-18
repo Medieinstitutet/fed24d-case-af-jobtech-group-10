@@ -6,12 +6,8 @@
 
 body {
   margin: 0;
-  font-family: sans-serif;
   background: $accent-light-cl;
-}
-
-h1 {
-  color: hotpink;
+  @include body-font;
 }
 
 .logo {

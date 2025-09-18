@@ -12,6 +12,8 @@ export interface JobAd {
   application_deadline?: string;
   description?: string;
   salary_description?: string;
+  email?: string | null;
+  phone_number?: string | null;
   
   occupation?: {                      //objekt för filtrering
     concept_id: string;
