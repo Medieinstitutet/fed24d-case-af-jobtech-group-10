@@ -38,7 +38,7 @@ export function TopCitiesChart({ cities }: { cities: CityStat[] }) {
     return () => ro.disconnect();
   }, []);
 
-  if (!cities || cities.length === 0) return <p>Inga data tillgängliga</p>;
+  if (!cities || cities.length === 0) return <p>Ingen data tillgänglig</p>;
 
   const chartData = {
     data: {
