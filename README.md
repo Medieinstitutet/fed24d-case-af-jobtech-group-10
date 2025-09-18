@@ -1,5 +1,3 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/6VsM7MHT)
-
 # Projektbeskrivning
 
 Detta projekt har utvecklats som en del av en kursuppgift i React. Uppgiften gick ut på att använda Arbetsförmedlingens designsystem tillsammans med deras öppna API. Bakgrunden är att Arbetsförmedlingen idag arbetar med att förbättra användarvänligheten i Platsbanken – och här kommer vårt projekt in i bilden.
@@ -19,15 +17,54 @@ Syftet är att skapa en webbapplikation där användare kan söka, filtrera och 
 |:---:|:---:|:---:|
 | [Angelica Nylander](https://github.com/angien90) | [Vy Petersson](https://github.com/tgvie) | [David Brunni](https://github.com/DavidBrunni) |
 
+## Sammarbete och rollfördelning
+Vi har tidigare erfarenhet av att arbeta tillsammans, vilket bidrog till att projektet snabbt kom igång när ramverket var på plats. Inledningsvis höll vi tätare möten för att gemensamt fastställa struktur och design. Därefter etablerades en rutin med avstämningar ungefär varannan dag för att följa upp framdriften.
+
+Samtliga teammedlemmar har kontinuerligt bidragit och haft leveranser att presentera vid varje möte. Arbetet har främst bedrivits individuellt, då vi funnit detta mest effektivt, men med en ständig öppenhet för frågor och diskussioner inom gruppen. Denna samarbetskultur har skapat en trygg miljö där alla känner sig bekväma med att lyfta även enklare eller mer grundläggande frågor.
+
 ## Teknologier
 - HTML, SCSS, Javascript/Typescript
 - React
-- Axios för API-anrop
-- Context API för state-hantering
+- Axios – för API-anrop
+- Context API – för statehantering
+- Arbetsförmedlingens Open API
+- Arbetsförmedlingens designsystem
 
 ## Demo
-![Startsida](./public/screenshot-home.png)
-![Sökresultat](./public/screenshot-search.png)
+#### Figma 
+<p align="left">
+  <img src="public/figma_assets.png" alt="Färgpalett och logga" width="400"/>
+</p>
+
+<p align="left">
+  <img src="public/figma_design.png" alt="Vår design" width="400"/>
+</p>
+
+#### Screenshots
+##### Navigering - Startsidan
+<p align="left">
+  <img src="public/screenshot_homepage.png" alt="Startsidan" width="400"/>
+</p>
+
+##### Navigering - Sök jobb
+<p align="left">
+  <img src="public/screenshot_job_search.png" alt="Sök jobb" width="400"/>
+</p>
+
+##### Navigering - Om oss
+<p align="left">
+  <img src="public/screenshot_about_us.png" alt="Om oss" width="400"/>
+</p>
+
+##### Sökning och filtreringsmöjligheter
+<p align="left">
+  <img src="public/screenshot_search_filter.png" alt="Sökning och filtrering" width="400"/>
+</p>
+
+##### Sidan som visar en jobbannons
+<p align="left">
+  <img src="public/screenshot_specific_object.png" alt="Specifikt objekt" width="400"/>
+</p>
 
 ## Installation
 
