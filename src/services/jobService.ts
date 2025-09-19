@@ -1,20 +1,62 @@
 import api from "./api";
+import taxonomyApi from "./taxonomyApi";
 import type { JobAd, SearchResponse, JobHit } from "../models/IJobs";
+import type { TaxonomyConcept, TaxonomyResponseConcept, OccupationConcept } from "../models/ITaxonomy";
 
 export interface CityStat {
-  id: string;   
-  name: string; 
+  id: string;
+  name: string;
   count: number;
 }
 
 // --------------------
-// Hämta detaljer för en annons
+// Hämta unika värden för filter från Taxonomy API
 // --------------------
+export async function fetchTaxonomyConcepts(type: string): Promise<TaxonomyConcept[]> {
+  try {
+    const res = await taxonomyApi.get(`/v1/taxonomy/main/concepts?type=${type}`);
+
+    if (type === "occupation-name") {
+      // Hantera datan för "occupation-name" som har en plattare struktur
+      const concepts: OccupationConcept[] = res.data;
+      return concepts.map((concept) => ({
+        id: concept.id,
+        label: concept.name,
+      }));
+    } else {
+      // Hantera datan för övriga typer som har "taxonomy"-strukturen
+      const concepts: TaxonomyResponseConcept[] = res.data;
+      return concepts.map((concept) => ({
+        id: concept.taxonomy.id,
+        label: concept.name,
+      }));
+    }
+  } catch (error) {
+    console.error(`Kunde inte hämta koncept för typen: ${type}`, error);
+    return [];
+  }
+}
+
+export async function getWorkingHoursOptions(): Promise<TaxonomyConcept[]> {
+  return fetchTaxonomyConcepts("working-hours-type");
+}
+
+export async function getOccupationGroupOptions(): Promise<TaxonomyConcept[]> {
+  return fetchTaxonomyConcepts("occupation-group");
+}
+
+export async function getOccupationOptions(): Promise<TaxonomyConcept[]> {
+  return fetchTaxonomyConcepts("occupation-name");
+}
+
+// --------------------
+// Resten av dina funktioner (oförändrade)
+// --------------------
+
 export async function getJobDetails(id: string): Promise<JobAd | null> {
   const res = await api.get(`/ad/${id}`);
   const ad = res.data;
 
-  // Filtrera bort jobb som inte tillhör yrkesområdet Data/IT
   if (ad.occupation_field?.concept_id !== "apaJ_2ja_LuF") return null;
 
   const job: JobAd = {
@@ -71,9 +113,6 @@ export async function getJobDetails(id: string): Promise<JobAd | null> {
   return job;
 }
 
-// --------------------
-// Sök med query, pagination, stad och anställningstyp
-// --------------------
 export async function searchJuniorTechJobs(
   query: string,
   page: number,
@@ -81,19 +120,19 @@ export async function searchJuniorTechJobs(
   city?: string,
   occupationGroup?: string,
   workingHoursLabel?: string,
-  occupation?: string 
+  occupation?: string
 ): Promise<{ jobs: JobAd[]; total: number }> {
   const params: Record<string, string | number> = {
     limit,
     offset: (page - 1) * limit,
-    q: query && query.trim() !== "" ? query : "junior tech", // 🚀 fix
+    q: query && query.trim() !== "" ? query : "junior tech",
     "occupation-field": "apaJ_2ja_LuF",
   };
 
   if (city) params.municipality = city;
   if (occupationGroup) params["occupation-group"] = occupationGroup;
   if (workingHoursLabel) params["working-hours-type"] = workingHoursLabel;
-  if (occupation) params.occupation = occupation; 
+  if (occupation) params.occupation = occupation;
 
   const res = await api.get<SearchResponse>("/search", { params });
   const hits: JobHit[] = res.data.hits;
@@ -107,10 +146,6 @@ export async function searchJuniorTechJobs(
   };
 }
 
-
-// --------------------
-// Senaste annonser
-// --------------------
 export async function getLatestJuniorTechJobs(
   limit: number = 4,
   city?: string,
@@ -135,9 +170,6 @@ export async function getLatestJuniorTechJobs(
   return jobs;
 }
 
-// --------------------
-// Hämta total antal Data/IT-juniorjobb
-// --------------------
 export async function getTotalJuniorTechJobs(
   city?: string,
   occupationGroup?: string
@@ -156,9 +188,6 @@ export async function getTotalJuniorTechJobs(
   return res.data.total?.value ?? 0;
 }
 
-// --------------------
-// Toppstäder (diagram) – filtrerar bort "Okänd stad"
-// --------------------
 export async function getTopCitiesForJuniorTech(limit: number = 10): Promise<CityStat[]> {
   const params: Record<string, string | number> = {
     limit: 100,
@@ -175,16 +204,9 @@ export async function getTopCitiesForJuniorTech(limit: number = 10): Promise<Cit
 
   const cityMap: Record<string, CityStat> = {};
   jobs.forEach((job) => {
-    // Säkerställ alltid en string för city-namn
     const cityName = job.city ?? "Okänd stad";
-
-    // För diagrammet vill vi exkludera Okänd stad
     if (cityName.toLowerCase() === "okänd stad") return;
-
-    // Använd municipality (concept-id) som nyckel om den finns,
-    // annars fallback till cityName (inte idealiskt men säkert)
     const id = job.municipality && job.municipality !== "" ? job.municipality : cityName;
-
     if (!cityMap[id]) {
       cityMap[id] = { id, name: cityName, count: 0 };
     }

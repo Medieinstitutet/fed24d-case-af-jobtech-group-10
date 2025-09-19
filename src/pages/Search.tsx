@@ -1,5 +1,9 @@
-function Search() {
-  return <h1>Sök-sidan fungerar ✅</h1>;
-}
+import Search from '../components/Search';
 
-export default Search;
+export default function SearchPage() {
+  return (
+    <>
+      <Search />
+    </>
+  );
+}
