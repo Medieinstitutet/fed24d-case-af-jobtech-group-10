@@ -1,6 +1,7 @@
 # 📌 Rättningsrapport – fed24d-case-af-jobtech-group-10
 
 ## 🎯 Uppgiftens Krav:
+[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/6VsM7MHT)
 # Skapa en egen Platsbanken för ert drömscenario 
 
 Dokumentation om Arbetsförmedlingens öppna data finns på https://jobtechdev.se. All öppna data från arbetsförmedlingen och andra offentliga organisationen går även att hitta direkt på dataportal.se. 
@@ -8,17 +9,17 @@ I detta dokument ges två förslag på användningsfall som vi tror är lämplig
 
 Läs först igenom kom-igång hjälpen 
 
--  [Övergripande dokumentation API:etJobSearch](https://data.arbetsformedlingen.se/data/platsannonser/)
--  [Kom-igång guide](https://gitlab.com/arbetsformedlingen/job-ads/jobsearch/jobsearch-api/-/blob/main/docs/GettingStartedJobSearchSE.md)
+-  [Övergripande dokumentation API:etJobSearch](https://jobtechdev.se/sv/components/jobsearch)
+-  [Kom-igång guide](https://gitlab.com/arbetsformedlingen/education/education-api/-/blob/main/GETTING_STARTED.md)
 
 ## Prova att utforska datan med vår interaktiva tjänst 
 
-Görs genom att öppna Swagger-sidan för API:et (för att enkelt testa olika endpoints i API:et och läsa dokumentation för respektive endpoint): [Search job ads (jobtechdev.se)](https://jobsearch.api.jobtechdev.se/)
+Görs genom att öppna Swagger-sidan för API:et (för att enkelt testa olika endpoints i API:et och läsa dokumentation för respektive endpoint): Search job ads (jobtechdev.se) 
 
 ## Uppgift 
 
-Använd endpoint **/search** för att söka bland befintliga annonser. 
-Det går även bra att använda historiska annonser om ni vill jämföra aktuella annonser med hur det har sett ut tidigare. Detta api finns här: [Historical job ads (jobtechdev.se)](https://historical.api.jobtechdev.se/)
+Använd endpoint https://jobsearch.api.jobtechdev.se/ för att använda/söka bland befintliga annonser. 
+Det går även bra att använda historiska annonser om ni vill jämföra aktuella annonser med hur det har sett ut tidigare. Detta api finns här: Historical job ads (jobtechdev.se)
 
 Om möjligt, använd en grafisk presentation av era resultat genom t.ex. stapeldiagram eller linjegrafer.
 
@@ -38,25 +39,36 @@ Er slutprodukt ska ej innehålla Arbetsförmedlingens logga eller färger. Anpas
 - Styled components (som drar nytta av designsystemet) 
 - Grafisk presentation av datat 
 - Användning av custom hook där det finns möjlighet
-- Använd endpoint /complete för att lägga till autocomplete-funktion och få förslag på begrepp vid fritextsökning
 
 ## 🔍 ESLint-varningar:
 - C:\Work\AssignmentCorrector\backend\repos\fed24d-case-af-jobtech-group-10\src\services\jobService.ts - no-console - Unexpected console statement.
 
 ## 🏆 **Betyg: G**
-📌 **Motivering:** Uppgiften uppfyller G-kraven: data hämtas strukturerat via axios, anropen är kapslade i tjänster (services), React-koncept som routing, state och separerade komponenter används, och designsystemet från Arbetsförmedlingen används konsekvent. Ni visar även grafisk presentation (stapeldiagram) och en detaljerad jobbsida.
+📌 **Motivering:** Uppfyller G-kraven: data hämtas strukturerat via axios och tjänstelager (api/taxonomyApi/jobService), React-router och state används, designsystemet från Arbetsförmedlingen används konsekvent med egen färgpalett, samt grafisk presentation (stapeldiagram) finns. Kodbasen är överlag välstrukturerad med TypeScript-modeller.
 
 💡 **Förbättringsförslag:**  
-- Sökflödet: SearchForm tar emot onSearch som prop men anropar aldrig den. Lägg till onAfOnClick på DigiFormInputSearch-knappen (och Enter-submit) samt trigga handleSearch även när filter väljs (t.ex. direkt i onAfSubmitFilter eller via useEffect beroende av filter/query).
-- Prestanda: Ni gör N+1-anrop genom att hämta /ad/:id för varje träff. Använd fältfiltrering i /search (t.ex. fields/include) för att få med de fält ni behöver direkt i träffarna och slippa extra detaljanrop.
-- Felhantering: Ni använder try/finally men fångar inte fel. Lägg till catch och visa ett Digi-komponent-baserat felmeddelande (t.ex. DigiInfoCard/DigiAlert) för bättre UX när API:et fallerar.
-- Säkerhet: Ni renderar HTML från API:t via dangerouslySetInnerHTML utan sanering. Använd t.ex. DOMPurify innan render.
-- Kodstädning: Ta bort kvarlämnade console.log i JobDetail och död kod (services/taxonomyService.ts verkar inte användas). Rensa oanvända props i SearchForm (t.ex. filterCity som inte används i komponenten) eller använd dem.
-- Namngivning/prop-konvention: Blanda inte af-variation (kebab-case) och afVariation (camelCase) i samma komponenttyp. Håll enhetlig stil enligt wrapperns typdefinitioner för bättre DX och typkontroll.
-- Navigering: DigiInfoCard använder af-link-href (ankarlänk). För interna länkar kan ni med fördel använda React Router <Link> för SPA-navigering utan full sidladdning.
-- UX: Visa laddare/fel per sektion i Dashboard (totalt, toppstäder, senaste) så inte hela instrumentpanelen blockerar allt vid partiella fel. Lägg gärna till tomt-tillstånd med tydligare information.
-- Konfiguration: Flytta bas-URL:er till miljövariabler (Vite env) och lägg till simpel cache för taxonomi-svar som sällan ändras.
-- Nice-to-have: Lägg till /complete för autocomplete i sökfältet samt extrahera söklogik till en custom hook (useJobsSearch) för bättre återanvändning och testbarhet.
+Funktionalitet och UX:
+- Koppla ihop Sök-knappen och filtren med sökningen. SearchForm tar emot onSearch men anropas aldrig; anropa handleSearch när användaren klickar Sök eller skickar filter (onAfSubmitFilter), och/eller trigga sökning automatiskt vid ändrade filter/sökterm (med debounce).
+- Undvik N+1-anrop i söklistan. Ni hämtar /search och därefter getJobDetails per träff. Använd i stället fälten från /search (eller välj specifika fält via params) för listvyn och hämta detaljer först i JobDetail. Det ger stor prestandavinst.
+
+Kodkvalitet och robusthet:
+- Lägg till felhantering i tjänster och UI (try/catch + användarvänliga felmeddelanden/empty states). Ni sätter loading i finally men visar inte fel för användaren.
+- Sanera HTML innan dangerouslySetInnerHTML (t.ex. DOMPurify) för att minimera XSS-risk.
+- Ta bort console.log i produktionskod och använd centraliserad logging vid behov.
+- Flytta baseURL till miljövariabler (Vite env) i stället för hårdkodning.
+
+Designsystem-API och typer:
+- Enhetlig props-casing för React-wrappers: använd camelCase (t.ex. afHeading, afHeadingLevel, afVariation) konsekvent. Kebab-case (af-heading) kan ignoreras av wrappern.
+- Använd wrapperns eventprops (t.ex. onAfOnClick) i stället för addEventListener på ref där det går. Säkerställ att ref pekar på underliggande web component (forwardRef), annars triggas inte eventlyssnare.
+
+CSS/struktur:
+- Undvik globala selektorer som påverkar allt (t.ex. li, ul). Scope:a till komponenter (BEM, CSS Modules) för att minska oönskade bieffekter.
+- DRY: ni duplicerar styling för .digi-info-card-content i flera filer. Extrahera till gemensam partial.
+
+Arkitektur/återanvändning:
+- Cache:a taxonomilistor (working-hours, occupation-group/-name) så att de inte hämtas om och om igen.
+- Skapa en custom hook (t.ex. useJobSearch) för logiken kring sök/pagination/filter – blir renare komponenter och enklare testning.
+- Rensa bort oanvända hjälpfunktioner (taxonomy.ts) eller konsolidera mot ett enda taxonomy-lager.
 
 ## 👥 Gruppbidrag
 
